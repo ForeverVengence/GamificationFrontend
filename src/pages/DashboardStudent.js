@@ -24,7 +24,7 @@ import { FiChevronDown } from 'react-icons/fi';
 import Container from '../components/Container';
 import Space from '../components/Space';
 import QuizPreview from '../components/QuizPreview';
-import QuizAddButton from '../components/QuizAddButton';
+// import QuizAddButton from '../components/QuizAddButton';
 import Loader from '../components/Loader';
 import { useQuizzes } from '../context/QuizContext';
 import useTitle from '../hooks/useTitle';
@@ -149,7 +149,7 @@ function DashboardStudent() {
           {role}
         </Text>
         <Switch id="email-alerts" onChange={switchRoles} marginTop={2} marginRight={10} size="lg" />
-        <QuizAddButton />
+        {/* <QuizAddButton /> */}
       </Flex>
 
       {filterDisabled ? null : (

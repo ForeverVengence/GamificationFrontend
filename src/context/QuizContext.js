@@ -131,9 +131,9 @@ export function QuizContextProvider({ children }) {
   }, [userErrorToast]);
 
   const updateQuiz = useCallback(
-    async (quizId, { questions, name, thumbnail, week }) => {
+    async (quizId, { questions, name, thumbnail, week, levelType }) => {
       try {
-        await api.put(`/admin/quiz/${quizId}`, { questions, name, thumbnail, week });
+        await api.put(`/admin/quiz/${quizId}`, { questions, name, thumbnail, week, levelType });
         setQuizzes((old) => {
           const quiz = old.find((q) => +q.id === +quizId);
 
@@ -141,6 +141,7 @@ export function QuizContextProvider({ children }) {
             if (questions) quiz.questions = questions;
             if (name) quiz.name = name;
             if (thumbnail) quiz.thumbnail = thumbnail;
+            if (levelType) quiz.levelType = levelType;
 
             return [...old];
           }

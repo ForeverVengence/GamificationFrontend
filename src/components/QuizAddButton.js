@@ -104,20 +104,20 @@ function QuizAddButton() {
       >
         <ModalOverlay />
         <ModalContent as="form" onSubmit={handleSubmit}>
-          <ModalHeader>Add a Quiz</ModalHeader>
+          <ModalHeader>Add a Level</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <FormControl isInvalid={!!error}>
               <FormControl>
                 <FormLabel htmlFor="name">
-                  Give your new quiz a name
+                  Give your new level a name
                 </FormLabel>
                 <Input autoComplete="off" ref={inputRef} id="name" name="name" value={name} onChange={handleNameChange} />
               </FormControl>
               <Text my={4} fontStyle="italic" textAlign="center" fontSize="lg">or</Text>
               <FormControl isInvalid={!!fileError}>
                 <FormLabel htmlFor="file">
-                  Load a quiz from a JSON file.
+                  Load a level from a JSON file.
                 </FormLabel>
                 <Input
                   autoComplete="off"
@@ -146,9 +146,9 @@ function QuizAddButton() {
               colorScheme="green"
               aria-label="add quiz"
             >
-              {name && 'Create New Quiz'}
-              {!name && file && 'Import Quiz'}
-              {!name && !file && 'Add Quiz'}
+              {name && 'Create New Level'}
+              {!name && file && 'Import Level'}
+              {!name && !file && 'Add Level'}
             </Button>
           </ModalFooter>
         </ModalContent>

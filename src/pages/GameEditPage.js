@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {
   Box,
   Button,
@@ -14,12 +15,16 @@ import {
   Link,
   Text,
   useToast,
+  option,
+  Select,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import {
   Prompt, Link as RouterLink, useParams, useHistory,
 } from 'react-router-dom';
-import { FiArrowLeft, FiPlus, FiSave } from 'react-icons/fi';
+import {
+  FiArrowLeft, FiPlus, FiSave, FiArrowDown,
+} from 'react-icons/fi';
 
 import Container from '../components/Container';
 import QuestionsList from '../components/QuestionsList';
@@ -38,7 +43,8 @@ function GameEditPage() {
   const history = useHistory();
 
   const [quiz, setQuiz] = useState({});
-
+  const [topicGroups, setTopicGroups] = useState([]);
+  const [selectedlLevelType, setSelectedLevelType] = useState('');
   const [name, setName] = useState('');
   const [week, setWeek] = useState('');
   const [thumbnail, setThumbnail] = useState('');
@@ -46,6 +52,9 @@ function GameEditPage() {
   const isNameChanged = name !== quiz?.name;
   const isThumbnailChanged = thumbnail !== quiz?.thumbnail;
   const isWeekChanged = week !== quiz?.week;
+  const isSelectedTpChanged = selectedlLevelType !== quiz?.levelType;
+  
+  // const temp = ['COMP3141', 'COMP2048', 'COMP2111'];
 
   useTitle('Edit Level');
 
@@ -58,6 +67,8 @@ function GameEditPage() {
           setName(q.name);
           setThumbnail(q.thumbnail);
           setWeek(q.week);
+          setSelectedLevelType(q.levelType);
+          setTopicGroups(['Learning', 'Practical', 'Challenge']);
         }
       });
     } else {
@@ -81,15 +92,20 @@ function GameEditPage() {
   const handleThumbnailChange = (newThumbnail) => {
     setThumbnail(newThumbnail);
   };
+  const handleLevelType = (event) => {
+    setSelectedLevelType(event.target.value);
+  };
+
   // This is triggered when SAVE
   const handleNameThumbnailSubmit = async (event) => {
     event.preventDefault();
-    if (!isNameChanged && !isThumbnailChanged && !isWeekChanged) return;
+    if (!isNameChanged && !isThumbnailChanged && !isWeekChanged && !isSelectedTpChanged) return;
     try {
       await doUpdate({
         name: isNameChanged ? name : null,
         thumbnail: isThumbnailChanged ? thumbnail : null,
         week: isWeekChanged ? week : null,
+        levelType: isSelectedTpChanged ? selectedlLevelType : null
       });
       toast({
         title: 'Saved your changes',
@@ -206,6 +222,33 @@ function GameEditPage() {
             <FormErrorMessage>
               <FormErrorIcon />
               Week Number is required.
+            </FormErrorMessage>
+          </FormControl>
+          <FormControl mb={4} isInvalid={!loading && selectedlLevelType === 'Select a Level Type'}>
+            <FormLabel htmlFor="type">Choose Level Type</FormLabel>
+            <InputGroup>
+              <Select icon={<FiArrowDown />} placeholder="Select a Level Type" value={selectedlLevelType} onChange={handleLevelType}>
+                {topicGroups.map((item) => (
+                  <option key={item}>{item}</option>
+                ))}
+              </Select>
+            </InputGroup>
+            <FormErrorMessage>
+              <FormErrorIcon />
+              Topic Group is required.
+            </FormErrorMessage>
+          </FormControl>
+          <FormControl mb={4} isInvalid={!loading && selectedlLevelType === 'Select a Level Format'}>
+            <FormLabel htmlFor="format">Choose Level Format</FormLabel>
+            <InputGroup>
+              <Select icon={<FiArrowDown />} placeholder="Select a Level Format">
+                <option>Live Quiz (Kahoot Style)</option>
+                <option>Self Paced Module</option>
+              </Select>
+            </InputGroup>
+            <FormErrorMessage>
+              <FormErrorIcon />
+              Topic Group is required.
             </FormErrorMessage>
           </FormControl>
           <ThumbnailInput

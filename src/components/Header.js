@@ -74,7 +74,31 @@ function Header() {
           variant="link"
           aria-label="Admin Dashboard"
         >
-          Admin Dashboard
+          Levels
+        </Button>
+      ) : null}
+      {token !== null && role === 'Staff' ? (
+        <Button
+          justifyContent="flex-start"
+          as={RouterLink}
+          onClick={closeDrawer}
+          to="/admin"
+          variant="link"
+          aria-label="Admin Dashboard"
+        >
+          Topic Groups
+        </Button>
+      ) : null}
+      {token !== null && role === 'Staff' ? (
+        <Button
+          justifyContent="flex-start"
+          as={RouterLink}
+          onClick={closeDrawer}
+          to="/admin"
+          variant="link"
+          aria-label="Repository"
+        >
+          Repository
         </Button>
       ) : null}
       {token !== null && role === 'Student' ? (
@@ -99,6 +123,18 @@ function Header() {
           aria-label="My Courses"
         >
           My Courses
+        </Button>
+      ) : null}
+      {token !== null && role === 'Student' ? (
+        <Button
+          justifyContent="flex-start"
+          as={RouterLink}
+          onClick={closeDrawer}
+          to="/student"
+          variant="link"
+          aria-label="Leaderboards"
+        >
+          Leaderboards
         </Button>
       ) : null}
       {token ? (
