@@ -24,6 +24,7 @@ import Container from '../components/Container';
 import Space from '../components/Space';
 import QuizPreview from '../components/QuizPreview';
 import QuizAddButton from '../components/QuizAddButton';
+import LevelAddButton from '../components/LevelAddButton';
 import Loader from '../components/Loader';
 import { useQuizzes } from '../context/QuizContext';
 import useTitle from '../hooks/useTitle';
@@ -149,6 +150,7 @@ function DashboardPage() {
         </Text>
         <Switch id="email-alerts" onChange={switchRoles} marginTop={2} marginRight={10} size="lg" defaultIsChecked />
         <QuizAddButton />
+        <LevelAddButton />
       </Flex>
 
       {filterDisabled ? null : (

@@ -22,7 +22,7 @@ import { useQuizzes } from '../context/QuizContext';
 import uploadJson from '../utils/uploadJson';
 import validateQuiz from '../utils/validateQuiz';
 
-function QuizAddButton() {
+function LevelAddButton() {
   const { createQuiz, updateQuiz } = useQuizzes();
   const [open, setOpen] = useState(false);
   const [name, setName] = useState('');
@@ -90,10 +90,10 @@ function QuizAddButton() {
 
   return (
     <>
-      <Button id="add-quiz" aria-label="Add Quiz" variant="solid" colorScheme="green" onClick={handleButtonClick}>
+      <Button id="add-quiz" aria-label="Add Quiz" variant="solid" colorScheme="red" onClick={handleButtonClick}>
         <ResponsiveButtonIcon icon={FiPlus} />
         <Text as="span" display={{ base: 'none', sm: 'inline' }} ml={2}>
-          New Quiz
+          New Level
         </Text>
       </Button>
 
@@ -157,4 +157,4 @@ function QuizAddButton() {
   );
 }
 
-export default QuizAddButton;
+export default LevelAddButton;
