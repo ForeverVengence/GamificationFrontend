@@ -104,7 +104,7 @@ function QuizAddButton() {
       >
         <ModalOverlay />
         <ModalContent as="form" onSubmit={handleSubmit}>
-          <ModalHeader>Add a Level</ModalHeader>
+          <ModalHeader>Add a Quiz</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <FormControl isInvalid={!!error}>

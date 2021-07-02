@@ -27,7 +27,7 @@ import Loader from './Loader';
 
 function QuizControl({ quiz: { id, active, questions } }) {
   const [open, setOpen] = useState(false);
-  const { startQuiz, stopQuiz } = useQuizzes();
+  const { startQuiz, stopQuiz, getQuiz } = useQuizzes();
   const [session, setSession] = useState();
   const playerUrl = `${window.location.origin}/game/join/${session}`;
   const { onCopy, hasCopied } = useClipboard(playerUrl);
@@ -58,6 +58,8 @@ function QuizControl({ quiz: { id, active, questions } }) {
     setIsQuizEnded(false);
     setSession('');
     setOpen(true);
+    const quizInfo = await getQuiz(id);
+    console.log(quizInfo);
     const sessionId = await startQuiz(id);
     setSession(sessionId);
   };
