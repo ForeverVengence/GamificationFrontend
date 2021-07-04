@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {
   Box,
   Button,
@@ -16,7 +17,7 @@ import {
   useClipboard,
   useToast,
 } from '@chakra-ui/react';
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import {
   FiBarChart2, FiCopy, FiPlay, FiSquare,
 } from 'react-icons/fi';
@@ -25,10 +26,11 @@ import { useQuizzes } from '../context/QuizContext';
 import QuizType from '../types/QuizType';
 import Loader from './Loader';
 
-function QuizControl({ quiz: { id, active, questions } }) {
+function QuizControl({ quiz: { id, active, questions, levelFormat, levelType } }) {
   const [open, setOpen] = useState(false);
   const { startQuiz, stopQuiz, getQuiz } = useQuizzes();
   const [session, setSession] = useState();
+  const [playText, setPlayText] = useState();
   const playerUrl = `${window.location.origin}/game/join/${session}`;
   const { onCopy, hasCopied } = useClipboard(playerUrl);
   const [isQuizEnded, setIsQuizEnded] = useState(false);
@@ -59,7 +61,7 @@ function QuizControl({ quiz: { id, active, questions } }) {
     setSession('');
     setOpen(true);
     const quizInfo = await getQuiz(id);
-    console.log(quizInfo);
+    // console.log(quizInfo);
     const sessionId = await startQuiz(id);
     setSession(sessionId);
   };
@@ -67,6 +69,22 @@ function QuizControl({ quiz: { id, active, questions } }) {
   const handleModalClose = async () => {
     setOpen(false);
   };
+
+  useEffect(() => {
+    console.log({ id, active, questions, levelFormat, levelType });
+    let totalPoints = 0;
+    for (let i = 0; i < questions.length; i++) {
+      totalPoints = totalPoints + questions[i].points
+    }
+
+    // Check if user has played this before
+    // If not display earn total points
+    setPlayText('Earn ' + totalPoints.toString() + ' Points');
+
+    // Else only earn 20% of total points
+
+
+  });
 
   return (
     <>
@@ -106,7 +124,7 @@ function QuizControl({ quiz: { id, active, questions } }) {
             onClick={handleStart}
             id={`start-quiz-${id}`}
           >
-            Play
+            {playText}
           </Button>
         </Tooltip>
       )}

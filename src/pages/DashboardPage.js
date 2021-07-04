@@ -143,7 +143,7 @@ function DashboardPage() {
     <Container>
       <Flex align="center" mt={6} mb={4}>
         <Heading as="h1" flexGrow="1">
-          Staff Dashboard
+          Levels
         </Heading>
         <Text marginRight={3} marginTop={2}>
           {role}

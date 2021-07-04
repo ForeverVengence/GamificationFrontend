@@ -70,6 +70,30 @@ function Header() {
           justifyContent="flex-start"
           as={RouterLink}
           onClick={closeDrawer}
+          to="/courses"
+          variant="link"
+          aria-label="Courses"
+        >
+          Courses
+        </Button>
+      ) : null}
+      {/* {token !== null && role === 'Staff' ? (
+        <Button
+          justifyContent="flex-start"
+          as={RouterLink}
+          onClick={closeDrawer}
+          to="/topicgroups"
+          variant="link"
+          aria-label="Topic Groups"
+        >
+          Topic Groups
+        </Button>
+      ) : null} */}
+      {token !== null && role === 'Staff' ? (
+        <Button
+          justifyContent="flex-start"
+          as={RouterLink}
+          onClick={closeDrawer}
           to="/admin"
           variant="link"
           aria-label="Admin Dashboard"
@@ -84,21 +108,9 @@ function Header() {
           onClick={closeDrawer}
           to="/admin"
           variant="link"
-          aria-label="Admin Dashboard"
+          aria-label="Quizes"
         >
-          Topic Groups
-        </Button>
-      ) : null}
-      {token !== null && role === 'Staff' ? (
-        <Button
-          justifyContent="flex-start"
-          as={RouterLink}
-          onClick={closeDrawer}
-          to="/admin"
-          variant="link"
-          aria-label="Repository"
-        >
-          Repository
+          Quizes
         </Button>
       ) : null}
       {token !== null && role === 'Student' ? (
@@ -120,9 +132,9 @@ function Header() {
           onClick={closeDrawer}
           to="/student"
           variant="link"
-          aria-label="My Courses"
+          aria-label="Shop"
         >
-          My Courses
+          Shop
         </Button>
       ) : null}
       {token !== null && role === 'Student' ? (

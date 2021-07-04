@@ -1,13 +1,13 @@
 import axios from 'axios';
 import { createStandaloneToast } from '@chakra-ui/react';
-import config from './config.json';
+// import config from './config.json';
 
-const PORT = config.BACKEND_PORT;
+// const PORT = 5005;
 const toast = createStandaloneToast();
 
 const api = axios.create({
   // baseURL: `http://p1.rasonchia.space:${PORT}`,
-  baseURL: `http://localhost:${PORT}`,
+  baseURL: 'http://localhost:5005',
 });
 
 api.interceptors.request.use((req) => {

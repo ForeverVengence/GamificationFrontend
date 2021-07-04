@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import { Box, Image, Text } from '@chakra-ui/react';
 import YoutubeVideo from './YoutubeVideo';

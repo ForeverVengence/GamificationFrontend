@@ -19,11 +19,12 @@ const cardBg = { light: 'gray.200', dark: 'gray.700' };
 
 const QuizPreview = ({ quiz }) => {
   const {
-    id, active, name, thumbnail, questions, isNew,
+    id, active, name, thumbnail, questions, isNew, levelFormat, levelType, week,
   } = quiz;
   const { colorMode } = useColorMode();
 
   const durationInSeconds = getQuizDuration(quiz);
+  // const quizData = getQuiz(quiz);
 
   const image = thumbnail
     ? <Image src={thumbnail} objectFit="contain" alt={name} width="100%" />
@@ -75,7 +76,20 @@ const QuizPreview = ({ quiz }) => {
         <Box p="4">
           <Text fontWeight="bold" fontSize="xl" mb={4}>{name}</Text>
           <SimpleGrid columns={1} justifyContent="center" columnGap={0}>
-            <Tag justifyContent="center">Week 1</Tag>
+            <Tag justifyContent="center">
+              Week
+              {' '}
+              {week}
+            </Tag>
+          </SimpleGrid>
+          <Space h={3} />
+          <SimpleGrid columns={2} justifyContent="center" columnGap={4}>
+            <Tag justifyContent="center">
+              {levelType}
+            </Tag>
+            <Tag justifyContent="center">
+              {levelFormat}
+            </Tag>
           </SimpleGrid>
           <Space h={3} />
           <SimpleGrid columns={2} justifyContent="center" columnGap={4}>

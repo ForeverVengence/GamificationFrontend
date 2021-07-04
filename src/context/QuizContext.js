@@ -47,6 +47,7 @@ const doUserErrorToast = (toast, msg) => toast({
 
 export function QuizContextProvider({ children }) {
   const [quizzes, setQuizzes] = useState([]);
+  const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(false);
   const { token } = useAuth();
   const history = useHistory();
@@ -130,10 +131,32 @@ export function QuizContextProvider({ children }) {
     return null;
   }, [userErrorToast]);
 
+  const createCourse = useCallback(async (courseCode, startDate, endDate, term, year) => {
+    try {
+      const course = await api.post('/admin/course/new', { courseCode, startDate, endDate, term, year });
+      
+      setCourses((old) => [
+        course,
+        ...old,
+      ]);
+      console.log(courses);
+      // setTimeout(() => {
+      //   newQuiz.isNew = false;
+      // }, 5000);
+      return course;
+    } catch (err) {
+      userErrorToast(err);
+    }
+    return null;
+  }, [userErrorToast]);
+
   const updateQuiz = useCallback(
-    async (quizId, { questions, name, thumbnail, week, levelType }) => {
+    async (quizId, { questions, name, thumbnail, week, levelType, levelFormat, totalPoints }) => {
+      
       try {
-        await api.put(`/admin/quiz/${quizId}`, { questions, name, thumbnail, week, levelType });
+        
+        console.log(totalPoints);
+        await api.put(`/admin/quiz/${quizId}`, { questions, name, thumbnail, week, levelType, levelFormat });
         setQuizzes((old) => {
           const quiz = old.find((q) => +q.id === +quizId);
 
@@ -142,7 +165,8 @@ export function QuizContextProvider({ children }) {
             if (name) quiz.name = name;
             if (thumbnail) quiz.thumbnail = thumbnail;
             if (levelType) quiz.levelType = levelType;
-
+            if (levelFormat) quiz.levelFormat = levelFormat;
+            if (totalPoints) quiz.totalPoints = totalPoints;
             return [...old];
           }
 
@@ -252,7 +276,7 @@ export function QuizContextProvider({ children }) {
 
   const deleteQuizQuestion = useCallback(
     async (quizId, questionId) => {
-      const quiz = quizzes.find((q) => q.id === quizId);
+      const quiz = quizzes.find((q) => q.id == quizId);
       await updateQuiz(quizId, {
         questions: quiz.questions.filter((q) => q.id !== questionId),
       });

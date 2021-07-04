@@ -22,6 +22,8 @@ import Register from './pages/Register';
 import { AuthContextProvider } from './context/AuthContext';
 import { SessionContextProvider } from './context/SessionContext';
 import HomePage from './pages/HomePage';
+import Courses from './pages/Courses';
+import TopicGroups from './pages/TopicGroups';
 
 function App() {
   return (
@@ -51,6 +53,16 @@ function App() {
               <Route exact path="/admin">
                 <QuizContextProvider>
                   <DashboardPage />
+                </QuizContextProvider>
+              </Route>
+              <Route exact path="/topicgroups">
+                <QuizContextProvider>
+                  <TopicGroups />
+                </QuizContextProvider>
+              </Route>
+              <Route exact path="/courses">
+                <QuizContextProvider>
+                  <Courses />
                 </QuizContextProvider>
               </Route>
               <Route exact path="/student">

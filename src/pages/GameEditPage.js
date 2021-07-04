@@ -45,6 +45,7 @@ function GameEditPage() {
   const [quiz, setQuiz] = useState({});
   const [topicGroups, setTopicGroups] = useState([]);
   const [selectedlLevelType, setSelectedLevelType] = useState('');
+  const [selectedFormatType, setSelectedFormatType] = useState('');
   const [name, setName] = useState('');
   const [week, setWeek] = useState('');
   const [thumbnail, setThumbnail] = useState('');
@@ -53,7 +54,7 @@ function GameEditPage() {
   const isThumbnailChanged = thumbnail !== quiz?.thumbnail;
   const isWeekChanged = week !== quiz?.week;
   const isSelectedTpChanged = selectedlLevelType !== quiz?.levelType;
-  
+  const isSelectedFormatChanged = selectedFormatType !== quiz?.levelFormat;
   // const temp = ['COMP3141', 'COMP2048', 'COMP2111'];
 
   useTitle('Edit Level');
@@ -69,6 +70,7 @@ function GameEditPage() {
           setWeek(q.week);
           setSelectedLevelType(q.levelType);
           setTopicGroups(['Learning', 'Practical', 'Challenge']);
+          setSelectedFormatType(q.levelFormat);
         }
       });
     } else {
@@ -96,16 +98,21 @@ function GameEditPage() {
     setSelectedLevelType(event.target.value);
   };
 
+  const handleFormatType = (event) => {
+    setSelectedFormatType(event.target.value);
+  }
+
   // This is triggered when SAVE
   const handleNameThumbnailSubmit = async (event) => {
     event.preventDefault();
-    if (!isNameChanged && !isThumbnailChanged && !isWeekChanged && !isSelectedTpChanged) return;
+    if (!isNameChanged && !isThumbnailChanged && !isWeekChanged && !isSelectedTpChanged && !isSelectedFormatChanged) return;
     try {
       await doUpdate({
         name: isNameChanged ? name : null,
         thumbnail: isThumbnailChanged ? thumbnail : null,
         week: isWeekChanged ? week : null,
-        levelType: isSelectedTpChanged ? selectedlLevelType : null
+        levelType: isSelectedTpChanged ? selectedlLevelType : null,
+        levelFormat: isSelectedFormatChanged ? selectedFormatType : null
       });
       toast({
         title: 'Saved your changes',
@@ -238,17 +245,17 @@ function GameEditPage() {
               Topic Group is required.
             </FormErrorMessage>
           </FormControl>
-          <FormControl mb={4} isInvalid={!loading && selectedlLevelType === 'Select a Level Format'}>
+          <FormControl mb={4} isInvalid={!loading && selectedFormatType === 'Select a Level Format'}>
             <FormLabel htmlFor="format">Choose Level Format</FormLabel>
             <InputGroup>
-              <Select icon={<FiArrowDown />} placeholder="Select a Level Format">
-                <option>Live Quiz (Kahoot Style)</option>
-                <option>Self Paced Module</option>
+              <Select icon={<FiArrowDown />} placeholder="Select a Level Format" value={selectedFormatType} onChange={handleFormatType}> 
+                <option>Live Quiz</option>
+                <option>Level</option>
               </Select>
             </InputGroup>
             <FormErrorMessage>
               <FormErrorIcon />
-              Topic Group is required.
+              Level Format is required.
             </FormErrorMessage>
           </FormControl>
           <ThumbnailInput
