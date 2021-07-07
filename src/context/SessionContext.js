@@ -13,6 +13,7 @@ export function SessionContextProvider({ children }) {
   const join = async (session, name) => {
     const res = await api.post(`/play/join/${session}`, { name });
     setIds((old) => ({ ...old, [+session]: res.data.playerId }));
+    console.log(res);
     return res.data.playerId;
   };
 

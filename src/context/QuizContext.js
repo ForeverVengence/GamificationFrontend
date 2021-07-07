@@ -87,7 +87,7 @@ export function QuizContextProvider({ children }) {
   const getQuiz = useCallback(
     async (quizId, force = false) => {
       let quiz = quizzes.find((q) => +q.id === +quizId);
-
+      
       if (!quiz || force) {
         try {
           quiz = await fetchQuiz(quizId);
@@ -103,7 +103,7 @@ export function QuizContextProvider({ children }) {
           }
         }
       }
-
+      // console.log(quiz);
       return quiz;
     },
     [quizzes, history],
@@ -315,6 +315,7 @@ export function QuizContextProvider({ children }) {
         getSessionQuiz,
         getQuizQuestion,
         createQuizQuestion,
+        createCourse,
         updateQuizQuestion,
         deleteQuizQuestion,
         getAdminStatus,

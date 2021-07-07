@@ -30,6 +30,13 @@ const QuizPreview = ({ quiz }) => {
     ? <Image src={thumbnail} objectFit="contain" alt={name} width="100%" />
     : <QuizPlaceholderImage />;
 
+  // useEffect(() => {
+    
+  //   console.log(quiz);
+
+
+  // });
+
   return (
     <motion.div
       layout

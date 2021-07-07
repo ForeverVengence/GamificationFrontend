@@ -29,6 +29,7 @@ function JoinGame() {
       await join(sessionId, name);
       history.push(`/game/play/${sessionId}`);
     } catch (err) {
+      console.log("error");
       if (err.response?.data?.error) {
         setSessionError(err.response?.data?.error);
       }

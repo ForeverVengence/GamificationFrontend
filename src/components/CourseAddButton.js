@@ -24,9 +24,9 @@ import uploadJson from '../utils/uploadJson';
 import validateQuiz from '../utils/validateQuiz';
 
 function CourseAddButton() {
-  const { createQuiz, updateQuiz } = useQuizzes();
+  const { createQuiz, updateQuiz, createCourse } = useQuizzes();
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState('');
+  const [courseCode, setCourseCode] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [term, setTerm] = useState('');
@@ -55,40 +55,47 @@ function CourseAddButton() {
 
   const handleSubmit = async (e) => {
     // Add New Course
-    console.log({ name: name, startDate: startDate });
+    console.log({ courseCode: courseCode, startDate: startDate, endDate: endDate, term: term, year: year });
     e.preventDefault();
     resetErrors();
-    if (name) {
-      const newQuizID = await createQuiz(name);
-      const linkToEdit = `/admin/edit/${newQuizID}`;
-      setName('');
-      handleDialogClose();
-      history.push(linkToEdit);
+    if (courseCode) {
+      const res = await createCourse(courseCode, startDate, endDate, term, year);
+      const newCourseID = res.data.courseId;
+      console.log(newCourseID);
+      // const linkToEdit = `/admin/edit/${newQuizID}`;
+      
+      // Close and navigate away
+      // setName('');
+      // handleDialogClose();
+      // history.push(linkToEdit);
     } else if (file) {
       if (file.type !== 'application/json') {
         setError('Uploaded file is not a JSON file.');
       }
-      setImporting(true);
-      try {
-        const json = await uploadJson(file);
-        await validateQuiz(json);
-        const { name: quizName, thumbnail, questions } = json;
-        const id = await createQuiz(quizName);
-        await updateQuiz(id, { thumbnail, questions });
-        handleDialogClose();
-      } catch (err) {
-        setFileError(err.message);
-      } finally {
-        setImporting(false);
-      }
-    } else {
-      setError('You need to give the quiz a name or select a JSON file');
     }
+
+    // The below is for JSON upload
+    //   setImporting(true);
+    //   try {
+    //     const json = await uploadJson(file);
+    //     await validateQuiz(json);
+    //     const { name: quizName, thumbnail, questions } = json;
+    //     const id = await createQuiz(quizName);
+    //     await updateQuiz(id, { thumbnail, questions });
+    //     handleDialogClose();
+    //   } catch (err) {
+    //     setFileError(err.message);
+    //   } finally {
+    //     setImporting(false);
+    //   }
+    // } else {
+    //   setError('You need to give the quiz a name or select a JSON file');
+    // }
   };
 
-  const handleNameChange = (e) => {
+  const handleCourseCodeChange = (e) => {
     setTouched(true);
-    setName(e.target.value);
+    setCourseCode(e.target.value);
   };
   const handleStartDateChange = (e) => {
     // setTouched(true);
@@ -138,7 +145,7 @@ function CourseAddButton() {
                 <FormLabel htmlFor="name">
                   Course Code
                 </FormLabel>
-                <Input autoComplete="off" ref={inputRef} id="name" name="name" value={name} onChange={handleNameChange} />
+                <Input autoComplete="off" ref={inputRef} id="courseCode" name="courseCode" value={courseCode} onChange={handleCourseCodeChange} />
                 <FormLabel htmlFor="name">
                   Start Date for course
                 </FormLabel>
@@ -182,7 +189,7 @@ function CourseAddButton() {
             <Button aria-label="Close" onClick={handleDialogClose}>Close</Button>
             <Button
               isLoading={importing}
-              isDisabled={touched && !name && !file}
+              isDisabled={touched && !courseCode && !file}
               type="submit"
               ml={3}
               colorScheme="green"

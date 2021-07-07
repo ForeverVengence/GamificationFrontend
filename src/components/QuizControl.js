@@ -30,6 +30,7 @@ function QuizControl({ quiz: { id, active, questions, levelFormat, levelType } }
   const [open, setOpen] = useState(false);
   const { startQuiz, stopQuiz, getQuiz } = useQuizzes();
   const [session, setSession] = useState();
+  const [isLiveQuiz, setIsLiveQuiz] = useState();
   const [playText, setPlayText] = useState();
   const playerUrl = `${window.location.origin}/game/join/${session}`;
   const { onCopy, hasCopied } = useClipboard(playerUrl);
@@ -56,14 +57,26 @@ function QuizControl({ quiz: { id, active, questions, levelFormat, levelType } }
     }
   };
 
+  // This triggers the start of quiz.
+  // Need to make logic
+  // If (Level) -> download whole quiz and run locally
+  // If (Kahoot) -> do as per current game
   const handleStart = async () => {
-    setIsQuizEnded(false);
-    setSession('');
-    setOpen(true);
-    const quizInfo = await getQuiz(id);
-    // console.log(quizInfo);
-    const sessionId = await startQuiz(id);
-    setSession(sessionId);
+    
+
+    if (levelFormat == "Live Quiz") {
+      setIsQuizEnded(false);
+      setSession('');
+      setOpen(true);
+      const sessionId = await startQuiz(id);
+      setSession(sessionId);
+    } else {
+      console.log(questions);
+      console.log(levelFormat);
+      // Push to play game that has no session on backend
+
+    }
+
   };
 
   const handleModalClose = async () => {
@@ -71,10 +84,17 @@ function QuizControl({ quiz: { id, active, questions, levelFormat, levelType } }
   };
 
   useEffect(() => {
-    console.log({ id, active, questions, levelFormat, levelType });
+
     let totalPoints = 0;
     for (let i = 0; i < questions.length; i++) {
       totalPoints = totalPoints + questions[i].points
+    }
+
+    if (levelFormat == "Live Quiz") {
+      setIsLiveQuiz(true);
+    } else {
+      
+      setIsLiveQuiz(false);
     }
 
     // Check if user has played this before
@@ -88,7 +108,7 @@ function QuizControl({ quiz: { id, active, questions, levelFormat, levelType } }
 
   return (
     <>
-      {active ? (
+      {active && isLiveQuiz? (
         <SimpleGrid columns={2} spacing={4}>
           <Button
             leftIcon={<FiBarChart2 />}
@@ -140,7 +160,7 @@ function QuizControl({ quiz: { id, active, questions, levelFormat, levelType } }
       >
         <ModalOverlay />
         <ModalContent>
-          {isQuizEnded ? (
+          {isQuizEnded && isLiveQuiz ? (
             <>
               <ModalHeader>Quiz Ended</ModalHeader>
               <ModalCloseButton />
@@ -163,11 +183,11 @@ function QuizControl({ quiz: { id, active, questions, levelFormat, levelType } }
           ) : (
             <>
               <ModalHeader>
-                {session ? 'Session ID' : 'Starting Quiz'}
+                {session && isLiveQuiz ? 'Session ID' : 'Starting Level'}
               </ModalHeader>
               <ModalCloseButton />
               <ModalBody textAlign="center">
-                {session ? (
+                {session && isLiveQuiz ? (
                   <Box mb={4}>
                     <Heading as="h2" fontSize="lg" fontWeight="normal">
                       Session Code

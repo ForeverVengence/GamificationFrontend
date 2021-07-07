@@ -13,6 +13,7 @@ import GameResultsPage from './pages/GameResultsPage';
 import NotFoundPage from './pages/NotFoundPage';
 import JoinGame from './pages/JoinGame';
 import PlayGame from './pages/PlayGame';
+import PlayLevel from './pages/PlayLevel';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import { QuizContextProvider } from './context/QuizContext';
@@ -73,6 +74,11 @@ function App() {
               <Route exact path="/admin/edit/:gameId([0-9]+)?">
                 <QuizContextProvider>
                   <GameEditPage />
+                </QuizContextProvider>
+              </Route>
+              <Route exact path="/level/play/:level([0-9]+)?">
+                <QuizContextProvider>
+                  <PlayLevel />
                 </QuizContextProvider>
               </Route>
               <Route exact path="/admin/edit/:gameId([0-9]+)/question/:questionId([0-9]+.[0-9]+)">
