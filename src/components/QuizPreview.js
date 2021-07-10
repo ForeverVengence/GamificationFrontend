@@ -12,6 +12,7 @@ import QuizDeleteButton from './QuizDeleteButton';
 import QuizPlaceholderImage from './QuizPlaceholderImage';
 import QuizControl from './QuizControl';
 // import OldSessionsMenu from './OldSessionsMenu';
+import { SessionContextProvider } from '../context/SessionContext';
 import getQuizDuration from '../utils/getQuizDuration';
 import Space from './Space';
 
@@ -124,7 +125,9 @@ const QuizPreview = ({ quiz }) => {
             <QuizDeleteButton quizId={id} />
           </SimpleGrid>
           {/* <OldSessionsMenu oldSessions={oldSessions} /> */}
-          <QuizControl quiz={quiz} />
+          <SessionContextProvider>
+            <QuizControl quiz={quiz} />
+          </SessionContextProvider>
         </Box>
       </Box>
     </motion.div>

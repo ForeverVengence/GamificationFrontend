@@ -27,6 +27,7 @@ import QuizAddButton from '../components/QuizAddButton';
 import LevelAddButton from '../components/LevelAddButton';
 import Loader from '../components/Loader';
 import { useQuizzes } from '../context/QuizContext';
+import { SessionContextProvider } from '../context/SessionContext';
 import useTitle from '../hooks/useTitle';
 import getQuizDuration from '../utils/getQuizDuration';
 import { useAuth } from '../context/AuthContext';
@@ -111,18 +112,20 @@ function DashboardPage() {
   } else {
     mainContent = (
       <AnimateSharedLayout>
-        <Grid
-          templateColumns="repeat(auto-fit, 17rem)"
-          justifyContent="space-around"
-          columnGap={8}
-          rowGap={10}
-        >
-          {
-            filtered.length
-              ? filtered.map((quiz) => <QuizPreview key={quiz.id} quiz={quiz} />)
-              : <Text fontSize="xl" textAlign="center">No quizzes match this filter</Text>
-          }
-        </Grid>
+        <SessionContextProvider>
+          <Grid
+            templateColumns="repeat(auto-fit, 17rem)"
+            justifyContent="space-around"
+            columnGap={8}
+            rowGap={10}
+          >
+            {
+              filtered.length
+                ? filtered.map((quiz) => <QuizPreview key={quiz.id} quiz={quiz} />)
+                : <Text fontSize="xl" textAlign="center">No quizzes match this filter</Text>
+            }
+          </Grid>
+        </SessionContextProvider>
       </AnimateSharedLayout>
     );
   }

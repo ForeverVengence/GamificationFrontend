@@ -95,7 +95,9 @@ function GameResultsPage() {
 
   const handleAdvance = useCallback(async () => {
     if (confirming) setConfirming(false);
+    console.log(sessionId);
     const res = await advanceSession(sessionId);
+    console.log(res);
     setStatus((old) => ({ ...old, position: res }));
     if (res >= status.questions.length) {
       handleEnd();

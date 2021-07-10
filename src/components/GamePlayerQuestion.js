@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable */
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   SimpleGrid, Heading, Text, Box, Button, VisuallyHiddenInput,
@@ -7,6 +8,8 @@ import QuestionType from '../types/QuestionType';
 import Container from './Container';
 import URLMediaPreview from './URLMediaPreview';
 import Countdown from './Countdown';
+import Space from './Space';
+import { useQuizzes } from '../context/QuizContext';
 
 const cols = {
   start: 'gray', correct: 'green', wrong: 'red', selected: 'teal',
@@ -14,7 +17,7 @@ const cols = {
 
 const compare = (a, b) => JSON.stringify(a.sort()) === JSON.stringify(b.sort());
 
-function GamePlayerQuestion({ question: _question, correctAnswers, onAnswerChange = () => {} }) {
+function GamePlayerQuestion({ question: _question, correctAnswers, session, onAnswerChange = () => {} }) {
   const {
     id,
     question,
@@ -24,6 +27,8 @@ function GamePlayerQuestion({ question: _question, correctAnswers, onAnswerChang
     duration,
     isoTimeLastQuestionStarted,
   } = _question;
+
+  const { advanceSession } = useQuizzes();
 
   const inputType = type === 'single' ? 'radio' : 'checkbox';
 
@@ -55,6 +60,26 @@ function GamePlayerQuestion({ question: _question, correctAnswers, onAnswerChang
         return [...old, i];
       });
     }
+  };
+
+  const handleNext = useCallback(async () => {
+    console.log("move to next question");
+    console.log(session);
+    const res = await advanceSession(session);
+    console.log(res);
+  }, []);
+
+  const handleClickToNextQuestion = () => () => {
+    console.log("move to next question");
+    console.log(question)
+
+    // 1. Check if on last question.
+    // Yes: Move to end Quiz
+
+
+    // No: Move to next Question
+
+
   };
 
   useEffect(() => {
@@ -89,11 +114,13 @@ function GamePlayerQuestion({ question: _question, correctAnswers, onAnswerChang
           {question}
         </Heading>
         {correctAnswers ? (
-          <Text>
-            Your answer was
-            {' '}
-            <Text as="b" color={isCorrect ? 'green.500' : 'red.500'}>{isCorrect ? 'correct!' : 'wrong ☹!'}</Text>
-          </Text>
+          <>
+            <Text>
+              Your answer was
+              {' '}
+              <Text as="b" color={isCorrect ? 'green.500' : 'red.500'}>{isCorrect ? 'correct!' : 'wrong ☹!'}</Text>
+            </Text>
+          </>
         ) : (
           <>
             <Text textAlign="center">
@@ -122,12 +149,14 @@ function GamePlayerQuestion({ question: _question, correctAnswers, onAnswerChang
           return (
             <Box>
               {!correctAnswers && (
-              <VisuallyHiddenInput
-                checked={selected.includes(i)}
-                id={ans}
-                value={ans}
-                type={inputType}
-              />
+              <>
+                <VisuallyHiddenInput
+                  checked={selected.includes(i)}
+                  id={ans}
+                  value={ans}
+                  type={inputType}
+                />
+              </>
               )}
               <Box
                 as="label"
@@ -152,6 +181,26 @@ function GamePlayerQuestion({ question: _question, correctAnswers, onAnswerChang
           );
         })}
       </SimpleGrid>
+      <Space h="6"/>
+      {correctAnswers ? (
+        <SimpleGrid mx="auto" maxWidth="container.xl" columns={{ base: 1, sm: 1 }} spacing={4} padding={4}>
+          <Button
+            width="100%"
+            height="100%"
+            fontSize="xl"
+            padding={4}
+            colorScheme="orange"
+            transition="all 250ms ease-in-out"
+            wordBreak="break-all"
+            wordWrap="break-word"
+            onClick={handleNext}
+          >
+          Next Question
+          </Button>
+        </SimpleGrid>
+      ) : (
+        null
+      )}
     </>
   );
 }

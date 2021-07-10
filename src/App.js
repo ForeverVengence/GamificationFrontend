@@ -45,12 +45,13 @@ function App() {
                   <JoinGame />
                 </SessionContextProvider>
               </Route>
-              <Route exact path="/game/play/:session" component={PlayGame}>
+              <Route exact path="/game/play/:session/:quizid?" component={PlayGame}>
                 <SessionContextProvider>
-                  <PlayGame />
+                  <QuizContextProvider>
+                    <PlayGame />
+                  </QuizContextProvider>
                 </SessionContextProvider>
               </Route>
-
               <Route exact path="/admin">
                 <QuizContextProvider>
                   <DashboardPage />

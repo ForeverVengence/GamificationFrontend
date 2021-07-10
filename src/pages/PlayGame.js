@@ -4,11 +4,15 @@ import {
   Box,
   Heading,
   useToast,
+  Button,
+  Center,
 } from '@chakra-ui/react';
 import { useParams } from 'react-router';
 import { useSessions } from '../context/SessionContext';
 import GamePlayerQuestion from '../components/GamePlayerQuestion';
 import PlayerResults from '../components/PlayerResults';
+import Space from '../components/Space';
+import { QuizContextProvider, useQuizzes } from '../context/QuizContext';
 // import Countdown from 'react-countdown';
 // import api from '../api';
 // import URLMediaPreview from '../components/URLMediaPreview';
@@ -16,20 +20,34 @@ import PlayerResults from '../components/PlayerResults';
 function PlayGame() {
   const [question, setQuestion] = useState(null);
   const [answer, setAnswer] = useState(null);
+  const [isLevel, setIsLevel] = useState(false);
   const [results, setResults] = useState(null);
-  const { session } = useParams();
+  const { session, quizid } = useParams();
   const {
     getQuestion,
     getAnswer,
     putAnswer,
     getResults,
   } = useSessions();
+  const {
+    getQuiz
+  } = useQuizzes();
   const toast = useToast();
-
+ 
   useEffect(() => {
     const interval = setInterval(async () => {
+      
+      if (typeof(quizid) !== 'undefined') {
+        console.log(quizid);
+        const quizInfo = await getQuiz(quizid);
+        if (quizInfo.levelFormat == "Level") {
+          setIsLevel(true);
+        }
+        console.log(quizInfo);
+      }
       try {
         const q = await getQuestion(session);
+        console.log(q);
         setQuestion((old) => {
           if (old?.id === q.id) {
             return old;
@@ -90,21 +108,50 @@ function PlayGame() {
     putAnswer(session, answers);
   };
 
+  const handleStart = () => () => {
+    console.log("Start Game");
+  };
+
   return (
     <Box flexGrow={1}>
-      <Box>
-        {!question && !results && <Heading textAlign="center" mt="20vh" as="h1">Waiting for Game to Start</Heading>}
-        {question && (
-          <GamePlayerQuestion
-            question={question}
-            correctAnswers={answer}
-            onAnswerChange={handleAnswerChange}
-          />
-        )}
-        {!question && results && (
-          <PlayerResults results={results} />
-        )}
-      </Box>
+      <QuizContextProvider>
+        <Box>
+          {!question && !results && !isLevel && <Heading textAlign="center" mt="20vh" as="h1">Waiting for Game to Start</Heading>}
+          { isLevel && 
+            <>
+              <Heading textAlign="center" mt="20vh" as="h1">Get Ready! You could earn 5000 Points</Heading>
+              <Space h="4" />
+              <Center alignSelf="center" alignContent="center" alignContent="center">
+              <Button
+                      width="50%"
+                      height="100%"
+                      fontSize="xl"
+                      padding={4}
+                      colorScheme="teal"
+                      transition="all 250ms ease-in-out"
+                      wordBreak="break-all"
+                      wordWrap="break-word"
+                      onClick={handleStart()}
+                    >
+                      Start Level
+                    </Button>
+              </Center>
+            </>
+          }
+            {question && (
+              <GamePlayerQuestion
+                question={question}
+                correctAnswers={answer}
+                session={session}
+                onAnswerChange={handleAnswerChange}
+              />
+            )}
+          
+          {!question && results && (
+            <PlayerResults results={results} />
+          )}
+        </Box>
+      </QuizContextProvider>
     </Box>
   );
 }

@@ -219,7 +219,9 @@ export function QuizContextProvider({ children }) {
   }, [quizzes]);
 
   const advanceSession = useCallback(async (session) => {
+    // console.log(session);
     const quiz = getSessionQuiz(session);
+    // console.log(quiz);
     if (quiz) {
       const res = await advanceQuiz(quiz.id);
       getQuiz(quiz.id, true);
