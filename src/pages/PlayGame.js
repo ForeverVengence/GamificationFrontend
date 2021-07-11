@@ -22,6 +22,7 @@ function PlayGame() {
   const [answer, setAnswer] = useState(null);
   const [isLevel, setIsLevel] = useState(false);
   const [results, setResults] = useState(null);
+  const [started, setStarted] = useState(false);
   const { session, quizid } = useParams();
   const {
     getQuestion,
@@ -30,7 +31,8 @@ function PlayGame() {
     getResults,
   } = useSessions();
   const {
-    getQuiz
+    getQuiz,
+    advanceSession
   } = useQuizzes();
   const toast = useToast();
  
@@ -38,16 +40,16 @@ function PlayGame() {
     const interval = setInterval(async () => {
       
       if (typeof(quizid) !== 'undefined') {
-        console.log(quizid);
+        // console.log(quizid);
         const quizInfo = await getQuiz(quizid);
         if (quizInfo.levelFormat == "Level") {
           setIsLevel(true);
         }
-        console.log(quizInfo);
+        // console.log(quizInfo);
       }
       try {
         const q = await getQuestion(session);
-        console.log(q);
+        // console.log(q);
         setQuestion((old) => {
           if (old?.id === q.id) {
             return old;
@@ -87,7 +89,7 @@ function PlayGame() {
       } catch (err) {
         const msg = err?.response?.data?.error;
         if (msg && msg !== "Question time has not been completed") {
-          console.log(msg);
+          // console.log(msg);
           // toast({
           //   status: 'error',
           //   title: 'Error',
@@ -108,16 +110,26 @@ function PlayGame() {
     putAnswer(session, answers);
   };
 
-  const handleStart = () => () => {
+  const handleStart = async () => {
     console.log("Start Game");
+    if (!started) {
+      await advanceSession(session);
+      setStarted(true);
+    }
+    
   };
+
+  // const handleStart = async () => {
+  //   console.log("Starting");
+  //   await advanceSession(session);
+  // };
 
   return (
     <Box flexGrow={1}>
       <QuizContextProvider>
         <Box>
           {!question && !results && !isLevel && <Heading textAlign="center" mt="20vh" as="h1">Waiting for Game to Start</Heading>}
-          { isLevel && 
+          { isLevel && !started &&
             <>
               <Heading textAlign="center" mt="20vh" as="h1">Get Ready! You could earn 5000 Points</Heading>
               <Space h="4" />
@@ -131,7 +143,7 @@ function PlayGame() {
                       transition="all 250ms ease-in-out"
                       wordBreak="break-all"
                       wordWrap="break-word"
-                      onClick={handleStart()}
+                      onClick={handleStart}
                     >
                       Start Level
                     </Button>
