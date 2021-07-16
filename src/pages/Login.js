@@ -29,8 +29,13 @@ function Login() {
   const handleSubmit = async (evt) => {
     evt.preventDefault();
     try {
-      await login(email, pass);
-      history.push('/admin');
+      const data = await login(email, pass);
+      if (data.role === 'Staff') {
+        history.push('/admin');
+      } else {
+        history.push('/student');
+      }
+      
     } catch (err) {
       setPass('');
       if (err.isAxiosError) {

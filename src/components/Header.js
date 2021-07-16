@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -16,6 +16,7 @@ import {
   Tooltip,
   Switch,
   useColorMode,
+  Tag,
 } from '@chakra-ui/react';
 import { FiMenu, FiMoon, FiSun } from 'react-icons/fi';
 
@@ -32,12 +33,9 @@ const icon = { light: <FiMoon />, dark: <FiSun /> };
 function Header() {
   const { colorMode, toggleColorMode } = useColorMode();
   const [show, setShow] = useState(false);
-  const { token, role, logout, setRole } = useAuth();
+  // const [points, setPoints] = useState(0);
+  const { token, role, logout, setRole, email, points, addPoints, getCurrentPoints } = useAuth();
   // const [setroleData] = useLocalStorage('role', '');
-
-  // useEffect(() => {
-  //   setShow(false);
-  // }, [location.pathname]);
 
   const openDrawer = () => {
     setShow(true);
@@ -52,19 +50,37 @@ function Header() {
     logout();
   };
 
+  const getPoints = async ()  => {
+    const res = await getCurrentPoints(email);
+    console.log(res.curr);
+    // setPoints(res.curr);
+  };
+
+  useEffect(() => {
+    getPoints();
+  });
+
   const navLinks = (
     <>
+      {token !== null ? (
+        <>
+          {/* <Tag size="lg" key="lg" variant="solid" colorScheme="teal">
+            {points} points
+          </Tag> */}
+          <Button
+            justifyContent="flex-start"
+            // as={RouterLink}
+            // to="/game/join"
+            // variant="link"
+            colorScheme="teal"
+            onClick={getPoints}
+            aria-label="Join Game"
+          >
+            {points} Points
+          </Button>
+        </>
+      ) : null}
       
-      {/* <Button
-        justifyContent="flex-start"
-        as={RouterLink}
-        to="/game/join"
-        variant="link"
-        onClick={closeDrawer}
-        aria-label="Join Game"
-      >
-        Join a Game
-      </Button> */}
       {token !== null && role === 'Staff' ? (
         <Button
           justifyContent="flex-start"

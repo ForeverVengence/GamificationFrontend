@@ -13,6 +13,7 @@ import GamePlayerQuestion from '../components/GamePlayerQuestion';
 import PlayerResults from '../components/PlayerResults';
 import Space from '../components/Space';
 import { QuizContextProvider, useQuizzes } from '../context/QuizContext';
+import { AuthContextProvider, useAuth } from '../context/AuthContext';
 // import Countdown from 'react-countdown';
 // import api from '../api';
 // import URLMediaPreview from '../components/URLMediaPreview';
@@ -23,7 +24,9 @@ function PlayGame() {
   const [isLevel, setIsLevel] = useState(false);
   const [results, setResults] = useState(null);
   const [started, setStarted] = useState(false);
+  const [totalPoints, setTotalPoints] = useState(false);
   const { session, quizid } = useParams();
+  const { token, points, addPoints } = useAuth();
   const {
     getQuestion,
     getAnswer,
@@ -45,7 +48,13 @@ function PlayGame() {
         if (quizInfo.levelFormat == "Level") {
           setIsLevel(true);
         }
-        // console.log(quizInfo);
+        let qs = quizInfo.questions;
+        let totalP = 0;
+        for (let i = 0; i < qs.length; i++) {
+          totalP = totalP + qs[i].points
+        }
+        setTotalPoints(totalP);
+        
       }
       try {
         const q = await getQuestion(session);
@@ -67,6 +76,7 @@ function PlayGame() {
           clearInterval(interval);
           try {
             const res = await getResults(session);
+            console.log(res);
             setResults(res);
           } catch (err2) {
             const msg2 = err2?.response?.data?.error;
@@ -128,10 +138,11 @@ function PlayGame() {
     <Box flexGrow={1}>
       <QuizContextProvider>
         <Box>
+          <AuthContextProvider>
           {!question && !results && !isLevel && <Heading textAlign="center" mt="20vh" as="h1">Waiting for Game to Start</Heading>}
           { isLevel && !started &&
             <>
-              <Heading textAlign="center" mt="20vh" as="h1">Get Ready! You could earn 5000 Points</Heading>
+              <Heading textAlign="center" mt="20vh" as="h1">Get Ready! You could earn {totalPoints} Points</Heading>
               <Space h="4" />
               <Center alignSelf="center" alignContent="center" alignContent="center">
               <Button
@@ -159,9 +170,10 @@ function PlayGame() {
               />
             )}
           
-          {!question && results && (
-            <PlayerResults results={results} />
-          )}
+            {!question && results && (
+              <PlayerResults results={results} />
+            )}
+          </AuthContextProvider>
         </Box>
       </QuizContextProvider>
     </Box>

@@ -69,19 +69,6 @@ function GamePlayerQuestion({ question: _question, correctAnswers, session, onAn
     console.log(res);
   }, []);
 
-  const handleClickToNextQuestion = () => () => {
-    console.log("move to next question");
-    console.log(question)
-
-    // 1. Check if on last question.
-    // Yes: Move to end Quiz
-
-
-    // No: Move to next Question
-
-
-  };
-
   useEffect(() => {
     if (duration) {
       const date = new Date(

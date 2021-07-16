@@ -34,6 +34,7 @@ export function SessionContextProvider({ children }) {
 
   const getResults = async (session) => {
     const res = await api.get(`/play/${getPlayerId(session)}/results`);
+    console.log(res.data);
     return res.data;
   };
 

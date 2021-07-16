@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import {
   Box,
@@ -10,6 +11,7 @@ import {
   SimpleGrid,
   Menu,
   MenuButton,
+  Tag,
   MenuList,
   Switch,
   MenuOptionGroup,
@@ -64,7 +66,7 @@ function DashboardStudent() {
   const [filtered, setFiltered] = useState([]);
   const [sortKey, setSortKey] = useState('none');
   const [sortOrder, setSortOrder] = useState('asc');
-  const { role, setRole } = useAuth();
+  const { role, setRole, points } = useAuth();
   const history = useHistory();
 
   const filterDisabled = loading || quizzes.length === 0;
@@ -105,7 +107,7 @@ function DashboardStudent() {
   } else if (quizzes.length === 0) {
     mainContent = (
       <Text fontSize="xl" textAlign="center">
-        You haven&apos;t made a quiz yet
+        You don&apos;t have anything assigned yet
       </Text>
     );
   } else {
@@ -143,12 +145,15 @@ function DashboardStudent() {
     <Container>
       <Flex align="center" mt={6} mb={4}>
         <Heading as="h1" flexGrow="1">
-          Student Dashboard
+          Hi Rason
         </Heading>
-        <Text marginRight={3} marginTop={2}>
+        {/* <Tag size="lg" key="lg" variant="solid" colorScheme="teal">
+            {points} Points
+        </Tag> */}
+        {/* <Text marginRight={3} marginTop={2}>
           {role}
         </Text>
-        <Switch id="email-alerts" onChange={switchRoles} marginTop={2} marginRight={10} size="lg" />
+        <Switch id="email-alerts" onChange={switchRoles} marginTop={2} marginRight={10} size="lg" /> */}
         {/* <QuizAddButton /> */}
       </Flex>
 

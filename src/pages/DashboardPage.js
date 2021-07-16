@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import {
   Box,
@@ -23,7 +24,7 @@ import {
 import Container from '../components/Container';
 import Space from '../components/Space';
 import QuizPreview from '../components/QuizPreview';
-import QuizAddButton from '../components/QuizAddButton';
+// import QuizAddButton from '../components/QuizAddButton';
 import LevelAddButton from '../components/LevelAddButton';
 import Loader from '../components/Loader';
 import { useQuizzes } from '../context/QuizContext';
@@ -148,11 +149,11 @@ function DashboardPage() {
         <Heading as="h1" flexGrow="1">
           Levels
         </Heading>
-        <Text marginRight={3} marginTop={2}>
+        {/* <Text marginRight={3} marginTop={2}>
           {role}
         </Text>
-        <Switch id="email-alerts" onChange={switchRoles} marginTop={2} marginRight={10} size="lg" defaultIsChecked />
-        <QuizAddButton />
+        <Switch id="email-alerts" onChange={switchRoles} marginTop={2} marginRight={10} size="lg" defaultIsChecked /> */}
+        {/* <QuizAddButton /> */}
         <LevelAddButton />
       </Flex>
 
