@@ -51,14 +51,16 @@ function Header() {
   };
 
   const getPoints = async ()  => {
-    const res = await getCurrentPoints(email);
-    console.log(res.curr);
+    const res = await getCurrentPoints(email); 
+    // const response = await addPoints(1000);
+    // console.log(response);
     // setPoints(res.curr);
   };
 
   useEffect(() => {
-    getPoints();
-  });
+    // getPoints();
+    console.log('Do something after points has changed in Header', points);
+  }, [points]);
 
   const navLinks = (
     <>
@@ -117,7 +119,7 @@ function Header() {
           Levels
         </Button>
       ) : null}
-      {token !== null && role === 'Staff' ? (
+      {/* {token !== null && role === 'Staff' ? (
         <Button
           justifyContent="flex-start"
           as={RouterLink}
@@ -128,7 +130,7 @@ function Header() {
         >
           Quizes
         </Button>
-      ) : null}
+      ) : null} */}
       {token !== null && role === 'Student' ? (
         <Button
           justifyContent="flex-start"

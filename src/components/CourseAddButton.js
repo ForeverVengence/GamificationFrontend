@@ -24,7 +24,7 @@ import uploadJson from '../utils/uploadJson';
 import validateQuiz from '../utils/validateQuiz';
 
 function CourseAddButton() {
-  const { createQuiz, updateQuiz, createCourse } = useQuizzes();
+  const { createQuiz, updateQuiz, createCourse, getOwnedCourses } = useQuizzes();
   const [open, setOpen] = useState(false);
   const [courseCode, setCourseCode] = useState('');
   const [startDate, setStartDate] = useState('');
@@ -63,11 +63,11 @@ function CourseAddButton() {
       const newCourseID = res.data.courseId;
       console.log(newCourseID);
       // const linkToEdit = `/admin/edit/${newQuizID}`;
-      
+
       // Close and navigate away
-      // setName('');
       handleDialogClose();
       // history.push(linkToEdit);
+
     } else if (file) {
       if (file.type !== 'application/json') {
         setError('Uploaded file is not a JSON file.');

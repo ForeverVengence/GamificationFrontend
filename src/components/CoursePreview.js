@@ -17,13 +17,13 @@ import Space from './Space';
 
 const cardBg = { light: 'gray.200', dark: 'gray.700' };
 
-const CoursePreview = ({ quiz }) => {
+const CoursePreview = ({ course }) => {
   const {
-    id, active, name, thumbnail, questions, isNew, levelFormat, levelType, week,
-  } = quiz;
+    id, active, courseCode, startDate, endDate, levels, owner, term, year, createdAt,
+  } = course;
   const { colorMode } = useColorMode();
 
-  const durationInSeconds = getQuizDuration(quiz);
+  // const durationInSeconds = getQuizDuration();
   // const quizData = getQuiz(quiz);
 
   // const image = thumbnail
@@ -59,7 +59,7 @@ const CoursePreview = ({ quiz }) => {
             <TagLabel>Active</TagLabel>
           </Tag>
         ) : null}
-        {isNew && (
+        {/* {isNew && (
           <Box
             bg="red.500"
             color="white"
@@ -72,36 +72,32 @@ const CoursePreview = ({ quiz }) => {
           >
             New
           </Box>
-        )}
+        )} */}
         <Box p="4">
-          <Text fontWeight="bold" fontSize="xl" mb={4}>{name}</Text>
+          <Text fontWeight="bold" fontSize="xl" mb={4}>{courseCode}</Text>
           <SimpleGrid columns={1} justifyContent="center" columnGap={0}>
             <Tag justifyContent="center">
-              Week
-              {' '}
-              {week}
+              {courseCode}
             </Tag>
           </SimpleGrid>
           <Space h={3} />
           <SimpleGrid columns={2} justifyContent="center" columnGap={4}>
             <Tag justifyContent="center">
-              {levelType}
+              {/* {levels.length} */}
+              {' '}
+              Levels
             </Tag>
             <Tag justifyContent="center">
-              {levelFormat}
+              HELLO
             </Tag>
           </SimpleGrid>
           <Space h={3} />
           <SimpleGrid columns={2} justifyContent="center" columnGap={4}>
             <Tag justifyContent="center">
-              {questions?.length || 0}
-              {' '}
-              questions
+              {year}
             </Tag>
             <Tag justifyContent="center">
-              {Math.ceil(durationInSeconds / 60)}
-              {' '}
-              minutes
+              {term}
             </Tag>
           </SimpleGrid>
           <SimpleGrid columns={2} gap={4} my={4}>

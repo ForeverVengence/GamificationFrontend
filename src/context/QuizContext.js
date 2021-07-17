@@ -58,6 +58,7 @@ export function QuizContextProvider({ children }) {
   const fetchAll = useCallback(async () => {
     try {
       setQuizzes(await fetchQuizzes());
+      setCourses(await getOwnedCourses());
     } catch (err) {
       if (err.response?.status === 403) {
         toast({
@@ -77,13 +78,15 @@ export function QuizContextProvider({ children }) {
   ), [toast]);
 
   useEffect(() => {
-    if (token && !quizzes.length) {
+    // console.log('Do something after counter has changed', courses);
+    if (token && !quizzes.length && !courses.length) {
       setLoading(true);
       fetchAll().then(() => {
         setLoading(false);
       });
     }
-  }, [fetchAll, token, quizzes.length]);
+  }, [fetchAll, token, quizzes.length, courses.length]);
+
   const getQuiz = useCallback(
     async (quizId, force = false) => {
       let quiz = quizzes.find((q) => +q.id === +quizId);
@@ -139,11 +142,26 @@ export function QuizContextProvider({ children }) {
         course,
         ...old,
       ]);
-      console.log(courses);
+      // console.log(courses);
       // setTimeout(() => {
       //   newQuiz.isNew = false;
       // }, 5000);
       return course;
+    } catch (err) {
+      userErrorToast(err);
+    }
+    return null;
+  }, [userErrorToast]);
+
+  const getOwnedCourses = useCallback(async () => {
+    
+    try {
+      const temp = await api.post('/admin/myCourses');
+      // console.log(temp.data);
+      // setCourses(temp.data);
+      
+      return temp.data;
+
     } catch (err) {
       userErrorToast(err);
     }
@@ -304,6 +322,7 @@ export function QuizContextProvider({ children }) {
     <QuizContext.Provider
       value={{
         quizzes,
+        courses,
         loading,
         getQuiz,
         createQuiz,
@@ -322,6 +341,7 @@ export function QuizContextProvider({ children }) {
         deleteQuizQuestion,
         getAdminStatus,
         getAdminResults,
+        getOwnedCourses,
       }}
     >
       {children}

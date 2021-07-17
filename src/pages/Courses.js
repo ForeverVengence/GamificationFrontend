@@ -10,6 +10,7 @@ import {
   SimpleGrid,
   Menu,
   MenuButton,
+  Tag,
   MenuList,
   MenuOptionGroup,
   MenuItemOption,
@@ -22,6 +23,7 @@ import CoursePreview from '../components/CoursePreview';
 import CourseAddButton from '../components/CourseAddButton';
 import Loader from '../components/Loader';
 import { useQuizzes } from '../context/QuizContext';
+import { useAuth } from '../context/AuthContext';
 import useTitle from '../hooks/useTitle';
 import getQuizDuration from '../utils/getQuizDuration';
 
@@ -53,9 +55,12 @@ const sortTypes = {
 };
 
 function Courses() {
-  const { quizzes, loading } = useQuizzes();
+  const { quizzes, loading, createCourse, getOwnedCourses, courses } = useQuizzes();
+  const { points } = useAuth();
+
   const [search, setSearch] = useState('');
   const [filtered, setFiltered] = useState([]);
+  // const [courses, setCourses] = useState([]);
   const [sortKey, setSortKey] = useState('none');
   const [sortOrder, setSortOrder] = useState('asc');
 
@@ -64,7 +69,14 @@ function Courses() {
   useTitle('Courses');
 
   useEffect(() => {
+
+    console.log('Do something after courses has changed', courses);
+    // console.log('Do something after points has changed', points);
+    // console.log('Do something after quiz has changed', quizzes);
+    // console.log(courses);
+    
     setFiltered(() => {
+      
       const res = quizzes.filter((q) => q.name.includes(search));
       if (sortKey !== 'none') {
         res.sort(sortTypes[sortKey].cmp);
@@ -74,7 +86,9 @@ function Courses() {
       }
       return res;
     });
-  }, [search, sortKey, sortOrder, quizzes]);
+
+    
+  }, [search, sortKey, sortOrder, quizzes, courses, points]);
 
   let mainContent;
 
@@ -99,9 +113,14 @@ function Courses() {
           columnGap={8}
           rowGap={10}
         >
-          {
+          {/* {
             filtered.length
               ? filtered.map((quiz) => <CoursePreview key={quiz.id} quiz={quiz} />)
+              : <Text fontSize="xl" textAlign="center">No quizzes match this filter</Text>
+          } */}
+          {
+            courses.length
+              ? courses.map((course) => <CoursePreview key={course.id} course={course} />)
               : <Text fontSize="xl" textAlign="center">No quizzes match this filter</Text>
           }
         </Grid>
@@ -125,8 +144,9 @@ function Courses() {
     <Container>
       <Flex align="center" mt={6} mb={4}>
         <Heading as="h1" flexGrow="1">
-          Courses
+          Your Courses
         </Heading>
+        <Tag>{points} Points</Tag>
         <CourseAddButton />
       </Flex>
 
