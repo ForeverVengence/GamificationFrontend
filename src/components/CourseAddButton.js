@@ -66,7 +66,7 @@ function CourseAddButton() {
       
       // Close and navigate away
       // setName('');
-      // handleDialogClose();
+      handleDialogClose();
       // history.push(linkToEdit);
     } else if (file) {
       if (file.type !== 'application/json') {
