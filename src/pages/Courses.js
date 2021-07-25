@@ -10,7 +10,6 @@ import {
   SimpleGrid,
   Menu,
   MenuButton,
-  Tag,
   MenuList,
   MenuOptionGroup,
   MenuItemOption,
@@ -23,7 +22,7 @@ import CoursePreview from '../components/CoursePreview';
 import CourseAddButton from '../components/CourseAddButton';
 import Loader from '../components/Loader';
 import { useQuizzes } from '../context/QuizContext';
-import { useAuth } from '../context/AuthContext';
+import { AuthContextProvider, useAuth } from '../context/AuthContext';
 import useTitle from '../hooks/useTitle';
 import getQuizDuration from '../utils/getQuizDuration';
 
@@ -107,23 +106,25 @@ function Courses() {
   } else {
     mainContent = (
       <AnimateSharedLayout>
-        <Grid
-          templateColumns="repeat(auto-fit, 17rem)"
-          justifyContent="space-around"
-          columnGap={8}
-          rowGap={10}
-        >
-          {/* {
-            filtered.length
-              ? filtered.map((quiz) => <CoursePreview key={quiz.id} quiz={quiz} />)
-              : <Text fontSize="xl" textAlign="center">No quizzes match this filter</Text>
-          } */}
-          {
-            courses.length
-              ? courses.map((course) => <CoursePreview key={course.id} course={course} />)
-              : <Text fontSize="xl" textAlign="center">No quizzes match this filter</Text>
-          }
-        </Grid>
+        <AuthContextProvider>
+          <Grid
+            templateColumns="repeat(auto-fit, 17rem)"
+            justifyContent="space-around"
+            columnGap={8}
+            rowGap={10}
+          >
+            {/* {
+              filtered.length
+                ? filtered.map((quiz) => <CoursePreview key={quiz.id} quiz={quiz} />)
+                : <Text fontSize="xl" textAlign="center">No quizzes match this filter</Text>
+            } */}
+            {
+              courses.length
+                ? courses.map((course) => <CoursePreview key={course.id} course={course} />)
+                : <Text fontSize="xl" textAlign="center">No quizzes match this filter</Text>
+            }
+          </Grid>
+        </AuthContextProvider>
       </AnimateSharedLayout>
     );
   }
@@ -146,7 +147,7 @@ function Courses() {
         <Heading as="h1" flexGrow="1">
           Your Courses
         </Heading>
-        <Tag>{points} Points</Tag>
+        {/* <Tag>{points} Points</Tag> */}
         <CourseAddButton />
       </Flex>
 

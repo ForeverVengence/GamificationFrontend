@@ -11,7 +11,8 @@ export function AuthContextProvider({ children }) {
   const [token, setToken, clearToken] = useLocalStorage('token', '');
   const [role, setRole, clearRole] = useLocalStorage('role', '');
   const [name, setName, clearName] = useLocalStorage('name', '');
-  const [points, setPoints, clearPoints] = useState(0);
+  const [points, setPoints] = useState(0);
+  // const [assigned, setAssigned] = useState(0);
   const [email, setEmail, clearEmail] = useLocalStorage('email', '');
   const history = useHistory();
   const toast = useToast();
@@ -30,6 +31,7 @@ export function AuthContextProvider({ children }) {
   const fetchAll = useCallback(async () => {
     try {
       setPoints(await getCurrentPoints(email));
+      // setAssigned(await getAssignedCourses(email));
     } catch (err) {
       if (err.response?.status === 403) {
         toast({
@@ -42,19 +44,27 @@ export function AuthContextProvider({ children }) {
         history.replace('/login');
       }
     }
-  }, [toast, history]);
+  }, [toast, history, email]);
 
   useEffect(() => {
-    // console.log('Do something after points has changed in AuthContext', points);
-
     if (token) {
-      console.log("Definitely Logged In");
+      // console.log("Definitely Logged In");
       fetchAll().then(() => {
-        console.log(points);
+        // console.log(points);
       });
     }
 
-  }, [points]);
+  }, [points, fetchAll, token]);
+
+
+  const getAssignedCourses = async () => {
+
+    const temp = await api.post('/admin/getAssignedCourses');
+    console.log(temp.data);
+    // setCourses(temp.data);
+      
+      return temp.data;
+  };
 
   const addEarnedPoints = async (results) => {
     console.log(results);
@@ -101,7 +111,7 @@ export function AuthContextProvider({ children }) {
     clearToken();
     clearRole();
     clearName();
-    clearPoints();
+    // clearPoints();
     clearEmail();
     history.push('/login');
   };

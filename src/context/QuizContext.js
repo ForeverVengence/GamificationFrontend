@@ -153,6 +153,25 @@ export function QuizContextProvider({ children }) {
     return null;
   }, [userErrorToast]);
 
+  const addLevelToCourse = useCallback(async (courseID, quizIDString) => {
+
+    // Split to get the quiz ID from string
+    const arr = quizIDString.split("| ");
+    const levelID = arr[1];
+
+    try {
+
+      const temp = await api.post('/admin/course/addLevel', { courseID, levelID });
+      // Update Latest Course List
+      setCourses(await getOwnedCourses());
+
+      return null;
+    } catch (err) {
+      userErrorToast(err);
+    }
+    return null;
+  }, [userErrorToast]);
+
   const getOwnedCourses = useCallback(async () => {
     
     try {
@@ -342,6 +361,7 @@ export function QuizContextProvider({ children }) {
         getAdminStatus,
         getAdminResults,
         getOwnedCourses,
+        addLevelToCourse,
       }}
     >
       {children}

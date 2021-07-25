@@ -66,7 +66,7 @@ function DashboardPage() {
   const [filtered, setFiltered] = useState([]);
   const [sortKey, setSortKey] = useState('none');
   const [sortOrder, setSortOrder] = useState('asc');
-  const { role, setRole } = useAuth();
+  const { role, setRole, email } = useAuth();
   const history = useHistory();
 
   const filterDisabled = loading || quizzes.length === 0;
@@ -85,7 +85,8 @@ function DashboardPage() {
 
   useEffect(() => {
     setFiltered(() => {
-      const res = quizzes.filter((q) => q.name.includes(search));
+      let res = quizzes.filter((q) => q.name.includes(search));
+      res = quizzes.filter((q) => q.owner.includes(email));
       if (sortKey !== 'none') {
         res.sort(sortTypes[sortKey].cmp);
         if (sortOrder === 'desc') {

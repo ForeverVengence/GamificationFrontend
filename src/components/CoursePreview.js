@@ -7,9 +7,10 @@ import {
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { FiCircle, FiEdit } from 'react-icons/fi';
-
+import { useAuth } from '../context/AuthContext';
 import QuizType from '../types/QuizType';
-import QuizDeleteButton from './QuizDeleteButton';
+import CourseDeleteButton from './CourseDeleteButton';
+import CourseAddLevelButton from './CourseAddLevelButton';
 import QuizPlaceholderImage from './QuizPlaceholderImage';
 // import OldSessionsMenu from './OldSessionsMenu';
 import getQuizDuration from '../utils/getQuizDuration';
@@ -22,6 +23,7 @@ const CoursePreview = ({ course }) => {
     id, active, courseCode, startDate, endDate, levels, owner, term, year, createdAt,
   } = course;
   const { colorMode } = useColorMode();
+  const { role, email } = useAuth();
 
   // const durationInSeconds = getQuizDuration();
   // const quizData = getQuiz(quiz);
@@ -74,46 +76,63 @@ const CoursePreview = ({ course }) => {
           </Box>
         )} */}
         <Box p="4">
-          <Text fontWeight="bold" fontSize="xl" mb={4}>{courseCode}</Text>
+          <Text fontWeight="bold" fontSize="xl" mb={4}>{courseCode}_{term}_{year}</Text>
           <SimpleGrid columns={1} justifyContent="center" columnGap={0}>
             <Tag justifyContent="center">
-              {courseCode}
-            </Tag>
-          </SimpleGrid>
-          <Space h={3} />
-          <SimpleGrid columns={2} justifyContent="center" columnGap={4}>
-            <Tag justifyContent="center">
-              {/* {levels.length} */}
+              {typeof(levels) == 'undefined' ? (
+                0
+              ) : (
+                <>
+                  {levels.length}
+                </>
+              )}
               {' '}
               Levels
             </Tag>
-            <Tag justifyContent="center">
-              HELLO
-            </Tag>
           </SimpleGrid>
           <Space h={3} />
-          <SimpleGrid columns={2} justifyContent="center" columnGap={4}>
+          <SimpleGrid columns={1} justifyContent="center" columnGap={4}>
+            <Tag justifyContent="center">
+              {startDate} - {endDate}
+            </Tag>
+          </SimpleGrid>
+          {/* <Space h={3} /> */}
+          {/* <SimpleGrid columns={2} justifyContent="center" columnGap={4}>
             <Tag justifyContent="center">
               {year}
             </Tag>
             <Tag justifyContent="center">
               {term}
             </Tag>
-          </SimpleGrid>
-          <SimpleGrid columns={2} gap={4} my={4}>
-            <Button
-              as={Link}
-              to={`/admin/edit/${id}`}
-              variant="outline"
-              colorScheme="blue"
-              leftIcon={<FiEdit />}
-            >
-              Edit
-            </Button>
-            <QuizDeleteButton quizId={id} />
-          </SimpleGrid>
-          {/* <OldSessionsMenu oldSessions={oldSessions} /> */}
-          {/* <QuizControl quiz={quiz} /> */}
+          </SimpleGrid> */}
+          {role == 'Staff' ? (
+            <>
+              <SimpleGrid columns={2} gap={4} my={4}>
+                <Button
+                  as={Link}
+                  to={`/admin/edit/${id}`}
+                  variant="outline"
+                  colorScheme="blue"
+                  leftIcon={<FiEdit />}
+                >
+                  Edit
+                </Button>
+                <CourseAddLevelButton courseCode={courseCode} courseID={id} />
+                <Button
+                  as={Link}
+                  to={`/admin/edit/${id}`}
+                  variant="outline"
+                  colorScheme="purple"
+                  leftIcon={<FiEdit />}
+                >
+                  Export
+                </Button>
+                <CourseDeleteButton quizId={id} />
+              </SimpleGrid>
+              
+            </>
+          ) : null}
+          
         </Box>
       </Box>
     </motion.div>

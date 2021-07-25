@@ -40,7 +40,12 @@ function Register() {
     } else {
       try {
         await register(email, pass, username, permission);
-        history.push('/admin');
+        if (permission === "Staff") {
+          history.push('/admin');
+        } else {
+          history.push('/student');
+        }
+        
       } catch (err) {
         const msg = err?.response?.data?.error;
         if (err.isAxiosError && msg) {

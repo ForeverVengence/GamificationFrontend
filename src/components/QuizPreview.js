@@ -6,7 +6,7 @@ import {
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { FiCircle, FiEdit } from 'react-icons/fi';
-
+import { useAuth } from '../context/AuthContext';
 import QuizType from '../types/QuizType';
 import QuizDeleteButton from './QuizDeleteButton';
 import QuizPlaceholderImage from './QuizPlaceholderImage';
@@ -23,6 +23,7 @@ const QuizPreview = ({ quiz }) => {
     id, active, name, thumbnail, questions, isNew, levelFormat, levelType, week,
   } = quiz;
   const { colorMode } = useColorMode();
+  const { role } = useAuth();
 
   const durationInSeconds = getQuizDuration(quiz);
   // const quizData = getQuiz(quiz);
@@ -112,18 +113,24 @@ const QuizPreview = ({ quiz }) => {
               minutes
             </Tag>
           </SimpleGrid>
-          <SimpleGrid columns={2} gap={4} my={4}>
-            <Button
-              as={Link}
-              to={`/admin/edit/${id}`}
-              variant="outline"
-              colorScheme="blue"
-              leftIcon={<FiEdit />}
-            >
-              Edit
-            </Button>
-            <QuizDeleteButton quizId={id} />
-          </SimpleGrid>
+          {role === 'Staff' ? (
+            <>
+              <SimpleGrid columns={2} gap={4} my={4}>
+                <Button
+                  as={Link}
+                  to={`/admin/edit/${id}`}
+                  variant="outline"
+                  colorScheme="blue"
+                  leftIcon={<FiEdit />}
+                >
+                  Edit
+                </Button>
+                <QuizDeleteButton quizId={id} />
+              </SimpleGrid>
+            </>
+          ) : (
+            <Space h="4" />
+          )}
           {/* <OldSessionsMenu oldSessions={oldSessions} /> */}
           <SessionContextProvider>
             <QuizControl quiz={quiz} />

@@ -31,6 +31,8 @@ function CourseAddButton() {
   const [endDate, setEndDate] = useState('');
   const [term, setTerm] = useState('');
   const [year, setYear] = useState('');
+  const [courseMeta, setcourseMeta] = useState('');
+
 
   const [touched, setTouched] = useState(false);
   const [importing, setImporting] = useState(false);
@@ -116,6 +118,11 @@ function CourseAddButton() {
     setYear(e.target.value);
   };
 
+  const handleCourseMeta = (e) => {
+    // setTouched(true);
+    setcourseMeta(e.target.value);
+  };
+
   const handleFileChange = (e) => {
     setTouched(true);
     setFile(e.target.files.length ? e.target.files[0] : null);
@@ -174,6 +181,17 @@ function CourseAddButton() {
                   id="file"
                   onChange={handleFileChange}
                 />
+                <FormErrorMessage>
+                  <FormErrorIcon />
+                  {fileError}
+                </FormErrorMessage>
+              </FormControl>
+              <Text my={4} fontStyle="italic" textAlign="center" fontSize="lg">or</Text>
+              <FormControl isInvalid={!!fileError}>
+                <FormLabel htmlFor="file">
+                  Select from MetaLms
+                </FormLabel>
+                <Input autoComplete="off" id="year" name="year" value={courseMeta} onChange={handleCourseMeta} />
                 <FormErrorMessage>
                   <FormErrorIcon />
                   {fileError}

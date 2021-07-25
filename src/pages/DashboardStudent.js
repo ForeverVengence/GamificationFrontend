@@ -31,7 +31,7 @@ import Loader from '../components/Loader';
 import { useQuizzes } from '../context/QuizContext';
 import useTitle from '../hooks/useTitle';
 import getQuizDuration from '../utils/getQuizDuration';
-import { useAuth } from '../context/AuthContext';
+import { AuthContextProvider, useAuth } from '../context/AuthContext';
 
 const sortTypes = {
   none: {
@@ -66,7 +66,7 @@ function DashboardStudent() {
   const [filtered, setFiltered] = useState([]);
   const [sortKey, setSortKey] = useState('none');
   const [sortOrder, setSortOrder] = useState('asc');
-  const { role, setRole, points } = useAuth();
+  const { role, setRole, points, email } = useAuth();
   const history = useHistory();
 
   const filterDisabled = loading || quizzes.length === 0;
@@ -84,8 +84,10 @@ function DashboardStudent() {
   useTitle('Student Levels');
 
   useEffect(() => {
+    console.log(quizzes);
     setFiltered(() => {
-      const res = quizzes.filter((q) => q.name.includes(search));
+      let res = quizzes.filter((q) => q.name.includes(search));
+      res = quizzes.filter((q) => q.assignedTo.includes(email));
       if (sortKey !== 'none') {
         res.sort(sortTypes[sortKey].cmp);
         if (sortOrder === 'desc') {
@@ -113,18 +115,20 @@ function DashboardStudent() {
   } else {
     mainContent = (
       <AnimateSharedLayout>
-        <Grid
-          templateColumns="repeat(auto-fit, 17rem)"
-          justifyContent="space-around"
-          columnGap={8}
-          rowGap={10}
-        >
-          {
-            filtered.length
-              ? filtered.map((quiz) => <QuizPreview key={quiz.id} quiz={quiz} />)
-              : <Text fontSize="xl" textAlign="center">No quizzes match this filter</Text>
-          }
-        </Grid>
+        <AuthContextProvider>
+          <Grid
+            templateColumns="repeat(auto-fit, 17rem)"
+            justifyContent="space-around"
+            columnGap={8}
+            rowGap={10}
+          >
+            {
+              filtered.length
+                ? filtered.map((quiz) => <QuizPreview key={quiz.id} quiz={quiz} />)
+                : <Text fontSize="xl" textAlign="center">No quizzes match this filter</Text>
+            }
+          </Grid>
+        </AuthContextProvider>
       </AnimateSharedLayout>
     );
   }
