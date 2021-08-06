@@ -26,10 +26,11 @@ import {
   FiArrowLeft, FiSave, FiArrowDown,
 } from 'react-icons/fi';
 
-function CourseAddLevelButton({ courseCode, courseID }) {
-  const { addLevelToCourse, updateQuiz, createCourse, getOwnedCourses, quizzes } = useQuizzes();
+function CourseAddLevelButton({ courseCode, courseID, course }) {
+  const { addLevelToCourse, removeLevelToCourse, createCourse, getOwnedCourses, quizzes } = useQuizzes();
   const [open, setOpen] = useState(false);
   const [selectedLevel, setSelectedLevel] = useState('Select a Level');
+  const [isAdding, setIsAdding] = useState(true);
   const [touched, setTouched] = useState(false);
   const [fileError, setFileError] = useState('');
   const [error, setError] = useState('');
@@ -53,37 +54,46 @@ function CourseAddLevelButton({ courseCode, courseID }) {
     // Add New Course
     e.preventDefault();
     console.log(selectedLevel);
-    if (selectedLevel == "Select a Level") {
+    if (selectedLevel.includes("Select a Level")) {
       setError('Please select a valid Level!');
     } else {
       resetErrors();
       console.log("Submitted");
       const res = await addLevelToCourse(courseID, selectedLevel);
+      setSelectedLevel('Select a Level');
+      handleDialogClose();
     }
-    
-    
-    // if (courseCode) {
-    //   const res = await createCourse(courseCode, startDate, endDate, term, year);
-    //   const newCourseID = res.data.courseId;
-    //   console.log(newCourseID);
-    //   // const linkToEdit = `/admin/edit/${newQuizID}`;
+  };
 
-    //   // Close and navigate away
-    //   handleDialogClose();
-    //   // history.push(linkToEdit);
-
-    // } else if (file) {
-    //   if (file.type !== 'application/json') {
-    //     setError('Uploaded file is not a JSON file.');
-    //   }
-    // }
+  const handleDelete = async (e) => {
+    // Add New Course
+    e.preventDefault();
+    console.log(selectedLevel);
+    if (selectedLevel.includes("Select a Level")) {
+      setError('Please select a valid Level!');
+    } else {
+      resetErrors();
+      console.log("Submitted");
+      const res = await removeLevelToCourse(courseID, selectedLevel);
+      setSelectedLevel('Select a Level');
+      handleDialogClose();
+    }
   };
 
   const handleLevelChange = (event) => {
     setTouched(true);
     console.log(event.target.value);
-    
+    console.log(course);
+    const arr = event.target.value.split("| ");
+    const levelID = arr[1];
     setSelectedLevel(event.target.value);
+    if (course.levels.includes(levelID)) {
+      // Already in Course, change to Delete Button
+      setIsAdding(false);
+    } else {
+      // Not in course, set to Add Button
+      setIsAdding(true);
+    }
   };
 
   return (
@@ -91,7 +101,7 @@ function CourseAddLevelButton({ courseCode, courseID }) {
       <Button id="add-quiz" aria-label="Add Quiz" variant="outline" colorScheme="green" onClick={handleButtonClick}>
         <ResponsiveButtonIcon icon={FiPlus} />
         <Text as="span" display={{ base: 'none', sm: 'inline' }} ml={2}>
-          Add Level
+          Edit Levels
         </Text>
       </Button>
 
@@ -102,13 +112,13 @@ function CourseAddLevelButton({ courseCode, courseID }) {
       >
         <ModalOverlay />
         <ModalContent as="form" onSubmit={handleSubmit}>
-          <ModalHeader>Add a Course</ModalHeader>
+          <ModalHeader>Edit {courseCode} Levels</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <FormControl isInvalid={!!error}>
               <FormControl>
                 <FormLabel htmlFor="name">
-                  Select Level to be added to {courseCode}
+                  Select Level to be added or removed for {courseCode}
                 </FormLabel>
                 {/* <Input autoComplete="off" ref={inputRef} id="courseCode" name="courseCode" value={courseCode} onChange={handleCourseCodeChange} /> */}
                 <InputGroup>
@@ -128,14 +138,32 @@ function CourseAddLevelButton({ courseCode, courseID }) {
           </ModalBody>
           <ModalFooter>
             <Button aria-label="Close" onClick={handleDialogClose}>Close</Button>
-            <Button
-              type="submit"
-              ml={3}
-              colorScheme="green"
-              aria-label="add quiz"
-            >
-              Add Level
-            </Button>
+            {!selectedLevel.includes('Select a Level') ? (
+              <>
+                {isAdding ? (
+                <Button
+                  type="submit"
+                  ml={3}
+                  colorScheme="green"
+                  aria-label="add quiz"
+                >
+                  Add Level
+                </Button>
+              ) : (
+                <Button
+                  onClick={handleDelete}
+                  ml={3}
+                  colorScheme="red"
+                  aria-label="add quiz"
+                >
+                  Remove Level
+                </Button>
+            )}
+              </>
+            ) : null}
+            
+            
+            
           </ModalFooter>
         </ModalContent>
       </Modal>

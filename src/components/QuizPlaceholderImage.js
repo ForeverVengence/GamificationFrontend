@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image } from '@chakra-ui/react';
-import placeholderImage from './placeholder.png';
+import placeholderImage from './placeholder1.png';
 
 function QuizPlaceholderImage({ absolute = true }) {
   return (

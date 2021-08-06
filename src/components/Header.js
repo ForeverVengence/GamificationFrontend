@@ -148,7 +148,7 @@ function Header() {
           justifyContent="flex-start"
           as={RouterLink}
           onClick={closeDrawer}
-          to="/student"
+          to="/shop"
           variant="link"
           aria-label="Shop"
         >
@@ -160,7 +160,7 @@ function Header() {
           justifyContent="flex-start"
           as={RouterLink}
           onClick={closeDrawer}
-          to="/student"
+          to="/leaderboards"
           variant="link"
           aria-label="Leaderboards"
         >

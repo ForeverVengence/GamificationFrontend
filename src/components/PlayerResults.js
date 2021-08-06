@@ -21,7 +21,6 @@ function PlayerResults({ results }) {
   // }
 
   useEffect(() => {
-    console.log("Hello World");
     console.log(results);
     let total = 0;
     const res = addEarnedPoints(results);

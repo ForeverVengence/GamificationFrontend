@@ -24,6 +24,7 @@ import { SessionContextProvider } from './context/SessionContext';
 import HomePage from './pages/HomePage';
 import Courses from './pages/Courses';
 import TopicGroups from './pages/TopicGroups';
+import Shop from './pages/Shop';
 
 function App() {
   return (
@@ -69,6 +70,11 @@ function App() {
               <Route exact path="/student">
                 <QuizContextProvider>
                   <DashboardStudent />
+                </QuizContextProvider>
+              </Route>
+              <Route exact path="/shop">
+                <QuizContextProvider>
+                  <Shop />
                 </QuizContextProvider>
               </Route>
               <Route exact path="/admin/edit/:gameId([0-9]+)?">

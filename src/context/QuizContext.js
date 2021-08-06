@@ -45,9 +45,18 @@ const doUserErrorToast = (toast, msg) => toast({
   position: 'top',
 });
 
+const doSuccessToast = (toast, msg) => toast({
+  title: 'Success',
+  description: msg,
+  status: 'success',
+  isClosable: true,
+  position: 'top',
+});
+
 export function QuizContextProvider({ children }) {
   const [quizzes, setQuizzes] = useState([]);
   const [courses, setCourses] = useState([]);
+  const [shopItems, setShopItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const { token } = useAuth();
   const history = useHistory();
@@ -59,6 +68,7 @@ export function QuizContextProvider({ children }) {
     try {
       setQuizzes(await fetchQuizzes());
       setCourses(await getOwnedCourses());
+      setShopItems(await getShopItems());
     } catch (err) {
       if (err.response?.status === 403) {
         toast({
@@ -75,6 +85,10 @@ export function QuizContextProvider({ children }) {
 
   const userErrorToast = useCallback((err) => doUserErrorToast(
     toast, err?.response?.data?.error || 'An error occurred',
+  ), [toast]);
+
+  const successToast = useCallback((res) => doSuccessToast(
+    toast, res || 'An error occurred',
   ), [toast]);
 
   useEffect(() => {
@@ -127,6 +141,7 @@ export function QuizContextProvider({ children }) {
       setTimeout(() => {
         newQuiz.isNew = false;
       }, 5000);
+      successToast("Level Created!");
       return quizId;
     } catch (err) {
       userErrorToast(err);
@@ -146,6 +161,7 @@ export function QuizContextProvider({ children }) {
       // setTimeout(() => {
       //   newQuiz.isNew = false;
       // }, 5000);
+      successToast("Course Created!");
       return course;
     } catch (err) {
       userErrorToast(err);
@@ -164,7 +180,29 @@ export function QuizContextProvider({ children }) {
       const temp = await api.post('/admin/course/addLevel', { courseID, levelID });
       // Update Latest Course List
       setCourses(await getOwnedCourses());
+      successToast("Level Added to " + courseID);
+      return null;
+    } catch (err) {
+      userErrorToast(err);
+    }
+    return null;
+  }, [userErrorToast]);
 
+  const removeLevelToCourse = useCallback(async (courseID, quizIDString) => {
+
+    // Split to get the quiz ID from string
+    const arr = quizIDString.split("| ");
+    const levelID = arr[1];
+
+    console.log(levelID);
+    
+
+    try {
+
+      const temp = await api.post('/admin/course/removeLevel', { courseID, levelID });
+      // Update Latest Course List
+      setCourses(await getOwnedCourses());
+      successToast("Level removed from  " + courseID);
       return null;
     } catch (err) {
       userErrorToast(err);
@@ -176,6 +214,21 @@ export function QuizContextProvider({ children }) {
     
     try {
       const temp = await api.post('/admin/myCourses');
+      // console.log(temp.data);
+      // setCourses(temp.data);
+      
+      return temp.data;
+
+    } catch (err) {
+      userErrorToast(err);
+    }
+    return null;
+  }, [userErrorToast]);
+
+  const getShopItems = useCallback(async () => {
+    
+    try {
+      const temp = await api.post('/admin/shop/items');
       // console.log(temp.data);
       // setCourses(temp.data);
       
@@ -303,6 +356,7 @@ export function QuizContextProvider({ children }) {
       }
       quiz.questions.push(newQuestion());
       await updateQuiz(quizId, { questions: quiz.questions });
+      successToast("Question Added!");
     },
     [quizzes, updateQuiz],
   );
@@ -342,6 +396,7 @@ export function QuizContextProvider({ children }) {
       value={{
         quizzes,
         courses,
+        shopItems,
         loading,
         getQuiz,
         createQuiz,
@@ -362,6 +417,8 @@ export function QuizContextProvider({ children }) {
         getAdminResults,
         getOwnedCourses,
         addLevelToCourse,
+        removeLevelToCourse,
+        getShopItems,
       }}
     >
       {children}
