@@ -65,7 +65,7 @@ function Courses() {
 
   const filterDisabled = loading || quizzes.length === 0;
 
-  useTitle('Courses');
+  useTitle('Topic Groups');
 
   useEffect(() => {
 
@@ -145,7 +145,7 @@ function Courses() {
     <Container>
       <Flex align="center" mt={6} mb={4}>
         <Heading as="h1" flexGrow="1">
-          Your Courses
+          Your Topic Groups
         </Heading>
         {/* <Tag>{points} Points</Tag> */}
         <CourseAddButton />

@@ -80,15 +80,6 @@ function PlayGame() {
             setResults(res);
           } catch (err2) {
             const msg2 = err2?.response?.data?.error;
-            // if (msg2) {
-            //   toast({
-            //     status: 'error',
-            //     title: 'Error',
-            //     description: msg,
-            //     isClosable: true,
-            //     duration: 5000,
-            //   });
-            // }
           }
         }
       }
@@ -99,14 +90,6 @@ function PlayGame() {
       } catch (err) {
         const msg = err?.response?.data?.error;
         if (msg && msg !== "Question time has not been completed") {
-          // console.log(msg);
-          // toast({
-          //   status: 'error',
-          //   title: 'Error',
-          //   description: msg,
-          //   isClosable: true,
-          //   duration: 5000,
-          // });
         }
       }
     }, 1000);

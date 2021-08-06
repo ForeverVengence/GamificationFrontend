@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { AnimatePresence, motion } from 'framer-motion';
 
 const Countdown = React.memo(({ timeLeft, size }) => {
-  const time = timeLeft > 0 ? timeLeft : "Time's up!";
+  const time = timeLeft > 0 ? timeLeft : "";
   return (
     <Box position="relative" textAlign="center" fontFamily="monospace">
 

@@ -88,11 +88,11 @@ function Header() {
           justifyContent="flex-start"
           as={RouterLink}
           onClick={closeDrawer}
-          to="/courses"
+          to="/topicgroups"
           variant="link"
-          aria-label="Courses"
+          aria-label="Topic Groups"
         >
-          Courses
+          Topic Groups
         </Button>
       ) : null}
       {/* {token !== null && role === 'Staff' ? (
@@ -119,18 +119,18 @@ function Header() {
           Levels
         </Button>
       ) : null}
-      {/* {token !== null && role === 'Staff' ? (
+      {token !== null && role === 'Staff' ? (
         <Button
           justifyContent="flex-start"
           as={RouterLink}
           onClick={closeDrawer}
           to="/admin"
           variant="link"
-          aria-label="Quizes"
+          aria-label="Repository"
         >
-          Quizes
+          Repository
         </Button>
-      ) : null} */}
+      ) : null}
       {token !== null && role === 'Student' ? (
         <Button
           justifyContent="flex-start"

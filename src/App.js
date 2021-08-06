@@ -57,12 +57,12 @@ function App() {
                   <DashboardPage />
                 </QuizContextProvider>
               </Route>
-              <Route exact path="/topicgroups">
+              {/* <Route exact path="/topicgroups">
                 <QuizContextProvider>
                   <TopicGroups />
                 </QuizContextProvider>
-              </Route>
-              <Route exact path="/courses">
+              </Route> */}
+              <Route exact path="/topicgroups">
                 <QuizContextProvider>
                   <Courses />
                 </QuizContextProvider>

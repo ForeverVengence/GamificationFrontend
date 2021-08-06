@@ -13,7 +13,7 @@ import {
   MenuButton,
   Tag,
   MenuList,
-  Switch,
+  Stack,
   MenuOptionGroup,
   MenuItemOption,
 } from '@chakra-ui/react';
@@ -145,21 +145,39 @@ function DashboardStudent() {
     setSortOrder(val);
   };
 
+  function Feature({ title, desc, ...rest }) {
+    return (
+      <Box p={3} shadow="md" borderWidth="1px" {...rest} borderRadius="10px">
+        <Heading fontSize="xl">{title}</Heading>
+        {/* <Text mt={2}>{desc}</Text> */}
+      </Box>
+    )
+  }
+
   return (
     <Container>
       <Flex align="center" mt={6} mb={4}>
         <Heading as="h1" flexGrow="1">
           Hi Rason
         </Heading>
-        {/* <Tag size="lg" key="lg" variant="solid" colorScheme="teal">
-            {points} Points
-        </Tag> */}
-        {/* <Text marginRight={3} marginTop={2}>
-          {role}
-        </Text>
-        <Switch id="email-alerts" onChange={switchRoles} marginTop={2} marginRight={10} size="lg" /> */}
-        {/* <QuizAddButton /> */}
+        
       </Flex>
+
+      <Stack spacing={2}>
+        <Feature
+          title="💪 Complete a Level each week to earn 50 000 points: 8/10 Weeks Completed"
+          desc="Complete a Level Weekly throughout the term to earn 50 000 points!"
+        />
+        <Feature
+          title="🎓 Complete 5 Challenge Levels and Earn 20 000 points!: 0/5 Completed "
+          desc="You deserve good things. With a whooping 10-15% interest rate per annum"
+        />
+        <Feature
+          title="🏆 Rank Top 10 in Course and Earn 2 Bonus Marks: Currently 43/310 Students"
+          desc="You deserve good things. With a whooping 10-15% interest rate per annum"
+        />
+      </Stack>
+      <Space h={3} />
 
       {filterDisabled ? null : (
         <SimpleGrid overflow="visible" px={2} spacing={4} columns={{ base: 1, sm: 2 }} pt={2} pb={4}>

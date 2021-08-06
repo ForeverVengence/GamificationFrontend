@@ -85,21 +85,36 @@ const QuizPreview = ({ quiz }) => {
         <Box p="4">
           <Text fontWeight="bold" fontSize="xl" mb={4}>{name}</Text>
           <SimpleGrid columns={1} justifyContent="center" columnGap={0}>
-            <Tag justifyContent="center">
-              Week
-              {' '}
-              {week}
+          {levelType === "Learning" ? (
+            <Tag justifyContent="center" bg="teal">
+              {levelType}{' '} {levelFormat}
             </Tag>
+          ) : (
+            <>
+              {levelType === "Practical" ? (
+                <Tag justifyContent="center" bg="orange" color="black">
+                  {levelType}{' '} {levelFormat}
+                </Tag>
+              ) : (
+                <Tag justifyContent="center" bg="red">
+                  {levelType}{' '} {levelFormat}
+                </Tag>
+              )}
+              
+            </>
+            
+          )}
+            
           </SimpleGrid>
           <Space h={3} />
-          <SimpleGrid columns={2} justifyContent="center" columnGap={4}>
+          {/* <SimpleGrid columns={2} justifyContent="center" columnGap={4}>
             <Tag justifyContent="center">
               {levelType}
             </Tag>
             <Tag justifyContent="center">
               {levelFormat}
             </Tag>
-          </SimpleGrid>
+          </SimpleGrid> */}
           <Space h={3} />
           <SimpleGrid columns={2} justifyContent="center" columnGap={4}>
             <Tag justifyContent="center">

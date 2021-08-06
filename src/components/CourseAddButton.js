@@ -133,7 +133,7 @@ function CourseAddButton() {
       <Button id="add-quiz" aria-label="Add Quiz" variant="solid" colorScheme="green" onClick={handleButtonClick}>
         <ResponsiveButtonIcon icon={FiPlus} />
         <Text as="span" display={{ base: 'none', sm: 'inline' }} ml={2}>
-          New Course
+          Add Topic Group
         </Text>
       </Button>
 
@@ -144,21 +144,32 @@ function CourseAddButton() {
       >
         <ModalOverlay />
         <ModalContent as="form" onSubmit={handleSubmit}>
-          <ModalHeader>Add a Course</ModalHeader>
+          <ModalHeader>Add a Topic Group</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
+            <FormControl isInvalid={!!fileError}>
+                <FormLabel htmlFor="file">
+                  Select from MetaLms
+                </FormLabel>
+                <Input autoComplete="off" id="year" name="year" value={courseMeta} onChange={handleCourseMeta} />
+                <FormErrorMessage>
+                  <FormErrorIcon />
+                  {fileError}
+                </FormErrorMessage>
+            </FormControl>
+            <Text my={4} fontStyle="italic" textAlign="center" fontSize="lg">or</Text>
             <FormControl isInvalid={!!error}>
               <FormControl>
                 <FormLabel htmlFor="name">
-                  Course Code
+                  Topic Group Code
                 </FormLabel>
                 <Input autoComplete="off" ref={inputRef} id="courseCode" name="courseCode" value={courseCode} onChange={handleCourseCodeChange} />
                 <FormLabel htmlFor="name">
-                  Start Date for course
+                  Start Date for Topic Group
                 </FormLabel>
                 <Input autoComplete="off" id="startDate" name="startDate" value={startDate} onChange={handleStartDateChange} />
                 <FormLabel htmlFor="name">
-                  End Date for course
+                  End Date for Topic Group
                 </FormLabel>
                 <Input autoComplete="off" id="endDate" name="endDate" value={endDate} onChange={handleEndDateChange} />
                 <FormLabel htmlFor="name">
@@ -186,17 +197,8 @@ function CourseAddButton() {
                   {fileError}
                 </FormErrorMessage>
               </FormControl>
-              <Text my={4} fontStyle="italic" textAlign="center" fontSize="lg">or</Text>
-              <FormControl isInvalid={!!fileError}>
-                <FormLabel htmlFor="file">
-                  Select from MetaLms
-                </FormLabel>
-                <Input autoComplete="off" id="year" name="year" value={courseMeta} onChange={handleCourseMeta} />
-                <FormErrorMessage>
-                  <FormErrorIcon />
-                  {fileError}
-                </FormErrorMessage>
-              </FormControl>
+              
+              
               <FormErrorMessage>
                 <FormErrorIcon />
                 {error}
