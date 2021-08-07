@@ -1,3 +1,5 @@
+node:14
+npm:latest
 # Create app directory
 WORKDIR /usr/src/app
 
