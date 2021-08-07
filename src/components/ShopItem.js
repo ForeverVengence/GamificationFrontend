@@ -20,7 +20,7 @@ const cardBg = { light: 'gray.200', dark: 'gray.700' };
 
 const ShopItem = ({ item }) => {
   const {
-    name, type, desc, duration, cost
+    name, type, desc, duration, cost, quantity, sellingFast
   } = item;
   const { colorMode } = useColorMode();
   const { role } = useAuth();
@@ -66,73 +66,77 @@ const ShopItem = ({ item }) => {
         </AspectRatio>
           <Tag size="lg" variant="solid" colorScheme="red" position="absolute" top={4} left={4}>
             <TagLeftIcon as={FiCircle} fill="white" color="white" />
-            <TagLabel>Active</TagLabel>
+            <TagLabel>{quantity} Left</TagLabel>
           </Tag>
-          <Box
-            bg="red.500"
-            color="white"
-            transform="rotate(45deg)"
-            position="absolute"
-            textAlign="center"
-            width="10rem"
-            top="1rem"
-            right="-3rem"
-          >
-            Selling Fast
-          </Box>
+          {sellingFast === true && (
+            <Box
+              bg="red.500"
+              color="white"
+              transform="rotate(45deg)"
+              position="absolute"
+              textAlign="center"
+              width="10rem"
+              top="1rem"
+              right="-3rem"
+            >
+              Selling Fast
+            </Box>
+          )}
         <Box p="4">
           <Text fontWeight="bold" fontSize="xl" mb={4}>{name}</Text>
           <SimpleGrid columns={1} justifyContent="center" columnGap={0}>
             <Tag justifyContent="center">
-              Week
-              {' '}
-              {/* {week} */}
+              {desc}
             </Tag>
           </SimpleGrid>
           <Space h={3} />
+          
           <SimpleGrid columns={2} justifyContent="center" columnGap={4}>
+            { duration === "Single Use" ? (
+              <Tag justifyContent="center">
+                {duration}
+              </Tag>
+            ) : (
+              <Tag justifyContent="center">
+                  {duration} Minutes
+              </Tag>
+            )}
+            
             <Tag justifyContent="center">
-              {/* {levelType} */}
-            </Tag>
-            <Tag justifyContent="center">
-              {/* {levelFormat} */}
+              {type}
             </Tag>
           </SimpleGrid>
           <Space h={3} />
-          <SimpleGrid columns={2} justifyContent="center" columnGap={4}>
-            <Tag justifyContent="center">
-              {/* {questions?.length || 0} */}
-              {' '}
-              questions
-            </Tag>
-            <Tag justifyContent="center">
-              {/* {Math.ceil(durationInSeconds / 60)} */}
-              {' '}
-              minutes
-            </Tag>
-          </SimpleGrid>
-          {role === 'Staff' ? (
+          {quantity > 0 ? (
             <>
-              <SimpleGrid columns={2} gap={4} my={4}>
+              <SimpleGrid columns={1} gap={4} my={4}>
                 <Button
                   as={Link}
                   // to={`/admin/edit/${id}`}
                   variant="outline"
-                  colorScheme="blue"
+                  colorScheme="green"
                   leftIcon={<FiEdit />}
                 >
-                  Edit
+                  Use {cost} Points
                 </Button>
-                {/* <QuizDeleteButton quizId={id} /> */}
               </SimpleGrid>
             </>
           ) : (
-            <Space h="4" />
+            <>
+              <SimpleGrid columns={1} gap={4} my={4}>
+                <Button
+                  as={Link}
+                  // to={`/admin/edit/${id}`}
+                  variant="outline"
+                  colorScheme="green"
+                  leftIcon={<FiEdit />}
+                  disabled="true"
+                >
+                  Sold Out
+                </Button>
+              </SimpleGrid>
+            </>
           )}
-          {/* <OldSessionsMenu oldSessions={oldSessions} /> */}
-          {/* <SessionContextProvider>
-            <QuizControl quiz={quiz} />
-          </SessionContextProvider> */}
         </Box>
       </Box>
     </motion.div>

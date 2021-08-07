@@ -68,10 +68,30 @@ export function AuthContextProvider({ children }) {
 
   const addEarnedPoints = async (results) => {
     console.log(results);
+    let correct = 0;
+    let numQ = results.length;
     let total = 0;
     for (let i = 0; i < results.length; i++) {
-      total = total + results[i].pointsEarned;
+      
+      if (results[i].pointsEarned > 0) {
+        total = total + results[i].pointsEarned;
+        correct = correct + 1;
+      }
     }
+
+    let calc = correct/numQ;
+    console.log(calc);
+
+    if (calc > 0.4 && calc <= 0.6) {
+      // If 40% - 50% correct, earn 0 points
+      total = 0;
+
+    } else if (calc <= 0.4) {
+      // If 0 - 40% correct, deduct 1000 points per wrong.
+      total = (numQ - correct) * -1000;
+
+    }
+
     const res = await api.post('/admin/auth/addPoints', { email, total });
     // console.log(res);
     setPoints(res.data.points);

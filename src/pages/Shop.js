@@ -156,16 +156,8 @@ function Shop() {
           Shop
         </Heading>
         <Text>
-          Spend Points to earn more!
+          Quantities indicated are for the term across all students
         </Text>
-        {/* <Tag size="lg" key="lg" variant="solid" colorScheme="teal">
-            {points} Points
-        </Tag> */}
-        {/* <Text marginRight={3} marginTop={2}>
-          {role}
-        </Text>
-        <Switch id="email-alerts" onChange={switchRoles} marginTop={2} marginRight={10} size="lg" /> */}
-        {/* <QuizAddButton /> */}
       </Flex>
 
       {filterDisabled ? null : (

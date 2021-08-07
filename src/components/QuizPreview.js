@@ -20,7 +20,7 @@ const cardBg = { light: 'gray.200', dark: 'gray.700' };
 
 const QuizPreview = ({ quiz }) => {
   const {
-    id, active, name, thumbnail, questions, isNew, levelFormat, levelType, week,
+    id, active, name, thumbnail, questions, isNew, levelFormat, levelType
   } = quiz;
   const { colorMode } = useColorMode();
   const { role } = useAuth();

@@ -23,7 +23,7 @@ import { AuthContextProvider } from './context/AuthContext';
 import { SessionContextProvider } from './context/SessionContext';
 import HomePage from './pages/HomePage';
 import Courses from './pages/Courses';
-import TopicGroups from './pages/TopicGroups';
+// import TopicGroups from './pages/TopicGroups';
 import Shop from './pages/Shop';
 
 function App() {
