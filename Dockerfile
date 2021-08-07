@@ -1,4 +1,4 @@
-node:14
+node:latest
 npm:latest
 
 # Create app directory
