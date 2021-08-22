@@ -46,7 +46,7 @@ function Login() {
 
   return (
     <Container>
-      <Heading mb={6} as="h1">Admin Login Hello World</Heading>
+      <Heading mb={6} as="h1">Admin Login</Heading>
       <form onSubmit={handleSubmit}>
         <FormControl mb={6} isRequired>
           <FormLabel>Email</FormLabel>
