@@ -30,7 +30,7 @@ function App() {
   return (
     <ChakraProvider theme={theme}>
       <ColorModeScript initialColorMode="dark" />
-      <Router>
+      <Router basename="/gamification">
         <AuthContextProvider>
           <Flex h="100%" direction="column">
             <Header />
