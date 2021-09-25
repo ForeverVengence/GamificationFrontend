@@ -14,9 +14,11 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Select,
   Text,
+  InputGroup,
 } from '@chakra-ui/react';
-import { FiPlus } from 'react-icons/fi';
+import { FiArrowLeft, FiPlus, FiSave, FiArrowDown, } from 'react-icons/fi';
 import { useHistory } from 'react-router-dom';
 import ResponsiveButtonIcon from './ResponsiveButtonIcon';
 import { useQuizzes } from '../context/QuizContext';
@@ -32,6 +34,7 @@ function CourseAddButton() {
   const [term, setTerm] = useState('');
   const [year, setYear] = useState('');
   const [courseMeta, setcourseMeta] = useState('');
+  const [selectedTopicGroup, setSelectedTopicGroup] = useState('');
 
 
   const [touched, setTouched] = useState(false);
@@ -127,6 +130,10 @@ function CourseAddButton() {
     setTouched(true);
     setFile(e.target.files.length ? e.target.files[0] : null);
   };
+  const handleChangeSelectedTopicGroup = (event) => {
+    setSelectedTopicGroup(event.target.value);
+  };
+
 
   return (
     <>
@@ -147,62 +154,53 @@ function CourseAddButton() {
           <ModalHeader>Add a Topic Group</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <FormControl isInvalid={!!fileError}>
+            <FormControl>
                 <FormLabel htmlFor="file">
-                  Select from MetaLms
+                  Select from MetaLms (Students Enrolled Inherited)
                 </FormLabel>
-                <Input autoComplete="off" id="year" name="year" value={courseMeta} onChange={handleCourseMeta} />
-                <FormErrorMessage>
-                  <FormErrorIcon />
-                  {fileError}
-                </FormErrorMessage>
-            </FormControl>
-            <Text my={4} fontStyle="italic" textAlign="center" fontSize="lg">or</Text>
-            <FormControl isInvalid={!!error}>
-              <FormControl>
-                <FormLabel htmlFor="name">
-                  Topic Group Code
+                <InputGroup>
+                  <Select icon={<FiArrowDown />} value={selectedTopicGroup} onChange={handleChangeSelectedTopicGroup} placeholder="Select a Topic Group">
+                    <option>Hello World 1</option>
+                    <option>Hello World 2</option>
+                  </Select>
+                </InputGroup>
+                <Text my={4} fontStyle="italic" textAlign="center" fontSize="lg">or</Text>
+                <FormLabel>
+                  Select from Repository
                 </FormLabel>
-                <Input autoComplete="off" ref={inputRef} id="courseCode" name="courseCode" value={courseCode} onChange={handleCourseCodeChange} />
-                <FormLabel htmlFor="name">
-                  Start Date for Topic Group
+                <FormLabel>
+                  (Imports Levels, no Students)
                 </FormLabel>
-                <Input autoComplete="off" id="startDate" name="startDate" value={startDate} onChange={handleStartDateChange} />
-                <FormLabel htmlFor="name">
-                  End Date for Topic Group
-                </FormLabel>
-                <Input autoComplete="off" id="endDate" name="endDate" value={endDate} onChange={handleEndDateChange} />
-                <FormLabel htmlFor="name">
-                  Term
-                </FormLabel>
-                <Input autoComplete="off" id="term" name="term" value={term} onChange={handleTermChange} />
-                <FormLabel htmlFor="name">
-                  Year
-                </FormLabel>
-                <Input autoComplete="off" id="year" name="year" value={year} onChange={handleYearChange} />
-              </FormControl>
-              <Text my={4} fontStyle="italic" textAlign="center" fontSize="lg">or</Text>
-              <FormControl isInvalid={!!fileError}>
-                <FormLabel htmlFor="file">
-                  Load a course from a JSON file.
-                </FormLabel>
-                <Input
-                  autoComplete="off"
-                  type="file"
-                  id="file"
-                  onChange={handleFileChange}
-                />
-                <FormErrorMessage>
-                  <FormErrorIcon />
-                  {fileError}
-                </FormErrorMessage>
-              </FormControl>
-              
-              
-              <FormErrorMessage>
-                <FormErrorIcon />
-                {error}
-              </FormErrorMessage>
+                <InputGroup>
+                  <Select icon={<FiArrowDown />} value={selectedTopicGroup} onChange={handleChangeSelectedTopicGroup} placeholder="Select a Repository Topic Group">
+                    <option>Hello World 1</option>
+                    <option>Hello World 2</option>
+                  </Select>
+                </InputGroup>
+                <Text my={4} fontStyle="italic" textAlign="center" fontSize="lg">or</Text>
+                <FormControl>
+                  <FormLabel htmlFor="name">
+                    Topic Group Code (Empty)
+                  </FormLabel>
+                  <Input placeholder="COMP1234" autoComplete="off" ref={inputRef} id="courseCode" name="courseCode" value={courseCode} onChange={handleCourseCodeChange} />
+                  <Text my={4} fontStyle="italic" textAlign="center" fontSize="lg">AND </Text>
+                  <FormLabel htmlFor="name">
+                    Start Date for Topic Group
+                  </FormLabel>
+                  <Input placeholder="dd/mm/yyyy" autoComplete="off" id="startDate" name="startDate" value={startDate} onChange={handleStartDateChange} />
+                  <FormLabel htmlFor="name">
+                    End Date for Topic Group
+                  </FormLabel>
+                  <Input placeholder="dd/mm/yyyy" autoComplete="off" id="endDate" name="endDate" value={endDate} onChange={handleEndDateChange} />
+                  <FormLabel htmlFor="name">
+                    Term
+                  </FormLabel>
+                  <Input placeholder="T2" autoComplete="off" id="term" name="term" value={term} onChange={handleTermChange} />
+                  <FormLabel htmlFor="name">
+                    Year
+                  </FormLabel>
+                  <Input placeholder="2021" autoComplete="off" id="year" name="year" value={year} onChange={handleYearChange} />
+                </FormControl>           
             </FormControl>
           </ModalBody>
           <ModalFooter>
