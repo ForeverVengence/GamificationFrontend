@@ -387,6 +387,13 @@ export function QuizContextProvider({ children }) {
     return data.results;
   }, []);
 
+
+  const getAssignedCoursesWithInfo = useCallback(async (sessionId) => {
+    const { data } = await api.post(`/admin/getAssignedCoursesWithInfo`);
+    // console.log(data);
+    return data.results;
+  }, []);
+
   if (!token) {
     return <Redirect to="/login" />;
   }
@@ -419,6 +426,7 @@ export function QuizContextProvider({ children }) {
         addLevelToCourse,
         removeLevelToCourse,
         getShopItems,
+        getAssignedCoursesWithInfo,
       }}
     >
       {children}

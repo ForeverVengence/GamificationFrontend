@@ -124,11 +124,23 @@ function Header() {
           justifyContent="flex-start"
           as={RouterLink}
           onClick={closeDrawer}
-          to="/admin"
+          to="/repository"
           variant="link"
           aria-label="Repository"
         >
           Repository
+        </Button>
+      ) : null}
+      {token !== null && role === 'Staff' ? (
+        <Button
+          justifyContent="flex-start"
+          as={RouterLink}
+          onClick={closeDrawer}
+          to="/leaderboard"
+          variant="link"
+          aria-label="Leaderboard"
+        >
+          Leaderboards
         </Button>
       ) : null}
       {token !== null && role === 'Student' ? (
@@ -160,7 +172,7 @@ function Header() {
           justifyContent="flex-start"
           as={RouterLink}
           onClick={closeDrawer}
-          to="/leaderboards"
+          to="/leaderboard"
           variant="link"
           aria-label="Leaderboards"
         >

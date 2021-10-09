@@ -25,6 +25,8 @@ import HomePage from './pages/HomePage';
 import Courses from './pages/Courses';
 // import TopicGroups from './pages/TopicGroups';
 import Shop from './pages/Shop';
+import Leaderboard from './pages/Leaderboard';
+import Repository from './pages/Repository';
 
 function App() {
   return (
@@ -57,11 +59,11 @@ function App() {
                   <DashboardPage />
                 </QuizContextProvider>
               </Route>
-              {/* <Route exact path="/topicgroups">
+              <Route exact path="/repository">
                 <QuizContextProvider>
-                  <TopicGroups />
+                  <Repository />
                 </QuizContextProvider>
-              </Route> */}
+              </Route>
               <Route exact path="/topicgroups">
                 <QuizContextProvider>
                   <Courses />
@@ -70,6 +72,11 @@ function App() {
               <Route exact path="/student">
                 <QuizContextProvider>
                   <DashboardStudent />
+                </QuizContextProvider>
+              </Route>
+              <Route exact path="/leaderboard">
+                <QuizContextProvider>
+                  <Leaderboard />
                 </QuizContextProvider>
               </Route>
               <Route exact path="/shop">
